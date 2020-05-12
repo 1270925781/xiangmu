@@ -1,0 +1,97 @@
+{extend name='admin@main'}
+
+{block name="button"}
+<!--{if auth("website/news/add")}-->
+<button data-modal='{:url("add")}' data-title="添加新闻" class='layui-btn layui-btn-sm layui-btn-primary'>添加新闻</button>
+<!--{/if}-->
+<!--{if auth("website/news/remove")}-->
+<button data-action='{:url("remove")}' data-confirm="确定要删除选择的数据吗?" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除新闻</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='news/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            <th class='text-left nowrap' width="10%">新闻分类</th>
+            <th class='text-left nowrap' width="10%">新闻封面图</th>
+            <th class='text-left nowrap' width="20%">新闻标题</th>
+            <th class='text-left nowrap' width="10%">新闻来源</th>
+            <th class='text-left nowrap' width="10%">新闻作者</th>
+            <th class='text-left nowrap' width="10%">新闻状态</th>
+            <th class='text-left nowrap' width="10%">发布时间</th>
+            <th class='text-left nowrap' width="10%"></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
+            <td class='list-table-sort-td'><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></td>
+
+            <td>{$vo.cate_name}</td>
+            <td class='text-left nowrap'>
+                {notempty name='vo.image'}
+                <img data-tips-image style="width:60px;height:60px" src="{$vo.image|default=''}" class="margin-right-5 text-top">
+                {/notempty}
+            </td>
+            <td>{$vo.title|default='--'}</td>
+            <td>{$vo.source|default='--'}</td>
+            <td>{$vo.author|default='--'}</td>
+            <td class='text-left nowrap'>
+                {eq name='vo.status' value='0'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}<br>
+            </td>
+            <td>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+                <div class="nowrap margin-bottom-5">
+                    <!--{if auth("website/news/edit")}-->
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有编辑新闻的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
+                    <!--{/if}-->
+
+                    {if isset($vo.status) and $vo.status eq 1}
+                    <!--{if auth("website/news/forbid")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">隐 藏</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有隐藏新闻的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">隐 藏</a>
+                    <!--{/if}-->
+                    {else}
+                    <!--{if auth("website/news/resume")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1">显 示</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有显示新闻的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">显 示</a>
+                    <!--{/if}-->
+                    {/if}
+                </div>
+
+
+                {if $vo.cate_id!=1}
+                <div class="nowrap margin-bottom-5">
+                    {if auth("website/news/remove")}
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                    {else}
+                    <a data-tips-text="您没有删除新闻的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">删 除</a>
+                    {/if}
+                </div>
+                {/if}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

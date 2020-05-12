@@ -1,0 +1,79 @@
+{extend name='admin@main'}
+
+{block name="button"}
+<!--{if auth("website/ads/add")}-->
+<button data-modal='{:url("add")}' data-title="添加广告位" class='layui-btn layui-btn-sm layui-btn-primary'>添加广告轮播图</button>
+<!--{/if}-->
+<!--{if auth("website/ads/remove")}-->
+<button data-action='{:url("remove")}' data-confirm="确定要删除选择的数据吗?" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除广告轮播图</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='ads/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            <th class='text-left nowrap' width="20%">广告名称</th>
+            <th class='text-left nowrap' width="10%">图片</th>
+            <th class='text-left nowrap' width="10%">广告位置</th>
+            <th class='text-left nowrap' width="10%">平台类型</th>
+            <th class='text-left nowrap' width="10%">广告类型</th>
+            <th class='text-left nowrap' width="5%">跳转路径</th>
+            <th class='text-left nowrap' width="5%">跳转ID</th>
+            <th class='text-left nowrap' width="10%">状态</th>
+            <th class='' style="width:150px">开始时间</th>
+            <th class='' style="width:150px">结束时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+        	<td class='list-table-sort-td'>
+                <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+            </td>
+            <td>{$vo.ad_name|default='--'}</td>
+            <td class='text-left nowrap'>
+                {notempty name='vo.ad_img'}
+                <img data-tips-image style="width:60px;height:60px" src="{$vo.ad_img|default=''}" class="margin-right-5 text-top">
+                {/notempty}
+            </td>
+            <td>{$vo.name|default='--'}</td>
+            <td>{$vo.platform_name|default='--'}</td>
+            <td>{$vo.type_name|default='--'}</td>
+            <td>{$vo.route|default='--'}</td>
+            <td>{$vo.route_id|default='--'}</td>
+            <td  style="min-width:50px">
+                {eq name='vo.status' value='0'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}<br>
+            </td>
+            <td style="min-width:100px">{$vo.starttime|default='--'}</td>
+            <td style="min-width:100px">{$vo.endtime|default='--'}</td>
+            <td class='text-left nowrap'>
+                <!--{if auth("website/ads/edit")}-->
+                <a data-title="编辑广告位" class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}'>编 辑</a>
+                <!--{/if}-->
+                <!--{if auth("website/ads/remove")}-->
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                <!--{/if}-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

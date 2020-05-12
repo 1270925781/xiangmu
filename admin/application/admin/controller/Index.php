@@ -1,0 +1,189 @@
+<?php
+
+
+
+namespace app\admin\controller;
+
+use app\admin\service\AuthService;
+use library\Controller;
+use library\tools\Data;
+use think\Console;
+use think\Db;
+
+/**
+ * 后台入口管理
+ * Class Index
+ * @package app\admin\controller
+ */
+class Index extends Controller
+{
+
+    /**
+     * 显示后台首页
+     * @throws \ReflectionException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function index()
+    {
+        $this->title = '云上互联管理后台';
+        $this->menus = AuthService::getAuthMenu();
+        if (empty($this->menus) && !session('user.id')) {
+            $this->redirect('@admin/login');
+        } else {
+			//卡掉部分 顶部主菜单
+			//根据权限卡掉部分一级菜单的显示
+			$authorize=session("user.authorize");//权限
+			if($authorize==2){//展厅权限
+				$this->assign('delmenu', array('2'));	//系统管理id=2		
+			}else{
+				$this->assign('delmenu', array());
+			}
+			//
+            $this->fetch();
+        }
+    }
+
+    /**
+     * 后台环境信息
+     * @return mixed
+     */
+    public function main()
+    {
+        $this->think_ver = \think\App::VERSION;
+        $this->mysql_ver = Db::query('select version() as ver')[0]['ver'];
+		$shop_id=session("user.shop_id");//展厅id
+		$authorize=session("user.authorize");//权限
+		$this->assign('shop_id', $shop_id);
+		//商家总量
+		$shopcount=Db::name('StoreShop')->where("is_freeze=2 and is_delete=2")->count();
+		$this->assign('shopcount', $shopcount);
+		//产品总量
+		if($shop_id){//显示当前店铺的商品数量
+			$goodscount=Db::name('StoreGoods')->where("is_delete=2 and shop_id=".$shop_id)->count();
+			$this->assign('goodscount', $goodscount);
+		}else{
+			$goodscount=Db::name('StoreGoods')->where("is_delete=2")->count();
+			$this->assign('goodscount', $goodscount);
+		}
+		//用户总量
+		$usercount=Db::name('StoreMember')->where("status=2")->count();
+		$this->assign('usercount', $usercount);
+        $this->fetch();
+    }
+
+    /**
+     * 清理系统运行缓存
+     */
+    public function clearRuntime()
+    {
+        if (!AuthService::isLogin()) {
+            $this->error('需要登录才能操作哦！');
+        }
+        $this->list = [
+            [
+                'title'   => 'Clean up running cached files',
+                'message' => nl2br(Console::call('clear')->fetch()),
+            ], [
+                'title'   => 'Clean up invalid session files',
+                'message' => nl2br(Console::call('xclean:session')->fetch()),
+            ],
+        ];
+        $this->fetch('admin@index/command');
+    }
+
+    /**
+     * 压缩发布系统
+     */
+    public function buildOptimize()
+    {
+        if (!AuthService::isLogin()) {
+            $this->error('需要登录才能操作哦！');
+        }
+        $this->list = [
+            [
+                'title'   => 'Build route cache',
+                'message' => nl2br(Console::call('optimize:route')->fetch()),
+            ], [
+                'title'   => 'Build database schema cache',
+                'message' => nl2br(Console::call('optimize:schema')->fetch()),
+            ], [
+                'title'   => 'Optimizes PSR0 and PSR4 packages',
+                'message' => nl2br(Console::call('optimize:autoload')->fetch()),
+            ], [
+                'title'   => 'Build config and common file cache',
+                'message' => nl2br(Console::call('optimize:config')->fetch()),
+            ],
+        ];
+        $this->fetch('admin@index/command');
+    }
+
+    /**
+     * 修改密码
+     * @param integer $id
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function pass($id)
+    {
+        $this->applyCsrfToken();
+        if (intval($id) !== intval(session('user.id'))) {
+            $this->error('只能修改当前用户的密码！');
+        }
+        if ($this->request->isGet()) {
+            $this->verify = true;
+            $this->_form('SystemUser', 'admin@user/pass', 'id', [], ['id' => $id]);
+        } else {
+            $data = $this->_input([
+                'password'    => $this->request->post('password'),
+                'repassword'  => $this->request->post('repassword'),
+                'oldpassword' => $this->request->post('oldpassword'),
+            ], [
+                'oldpassword' => 'require',
+                'password'    => 'require|min:4',
+                'repassword'  => 'require|confirm:password',
+            ], [
+                'oldpassword.require' => '旧密码不能为空！',
+                'password.require'    => '登录密码不能为空！',
+                'password.min'        => '登录密码长度不能少于4位有效字符！',
+                'repassword.require'  => '重复密码不能为空！',
+                'repassword.confirm'  => '重复密码与登录密码不匹配，请重新输入！',
+            ]);
+            $user = Db::name('SystemUser')->where(['id' => $id])->find();
+            if (md5($data['oldpassword']) !== $user['password']) {
+                $this->error('旧密码验证失败，请重新输入！');
+            }
+            $result = AuthService::checkPassword($data['password']);
+            if (empty($result['code'])) $this->error($result['msg']);
+            if (Data::save('SystemUser', ['id' => $user['id'], 'password' => md5($data['password'])])) {
+                $this->success('密码修改成功，请使用新密码登录！', '');
+            } else {
+                $this->error('密码修改失败，请稍候再试！');
+            }
+        }
+    }
+
+    /**
+     * 修改用户资料
+     * @param integer $id 会员ID
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function info($id = 0)
+    {
+        $this->applyCsrfToken();
+        if (intval($id) === intval(session('user.id'))) {
+            $this->_form('SystemUser', 'admin@user/form', 'id', [], ['id' => $id]);
+        } else {
+            $this->error('只能修改登录用户的资料！');
+        }
+    }
+
+}

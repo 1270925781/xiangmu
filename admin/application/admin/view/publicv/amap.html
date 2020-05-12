@@ -1,0 +1,139 @@
+{extend name='admin@iframe'}
+
+{block name="content"}
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.4&key=118ded25cec8579cf4a886240e430a4e&plugin=AMap.Geocoder"></script>
+<fieldset>
+	<legend class="layui-bg-cyan">条件搜索</legend>
+	<div class="layui-form-item layui-inline">
+		<div class="layui-input-inline">
+			<input name="keyword" value="" id="keyword" placeholder="请输入搜索关键字" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item layui-inline">
+		<button class="layui-btn layui-btn-primary" id="amapsearch"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+	</div>
+</fieldset>
+<div id="container" class="col-sm-8" style="height:350px;"></div>
+<input id="lon" class="form-control" name="lon" type="hidden" value="{$longitude}" >
+<input id="lat" class="form-control" name="lat" type="hidden" value="{$latitude}" >
+<input id="add_" class="form-control" name="add_" type="hidden"  >
+<input id="pro" class="form-control" name="pro" type="hidden"  >
+<input id="cit" class="form-control" name="cit" type="hidden"  >
+<input id="dis" class="form-control" name="dist" type="hidden"  >
+<div class="layui-form-item text-center" style="padding-top:10px;">
+	<button type="button" class="layui-btn layui-btn-fluid" id="btnclick">确   定</button>
+</div>
+<script>
+	$(function () {
+		var map = new AMap.Map('container',{
+			resizeEnable: true,
+			zoom: 12,
+			center: [{$longitude}, {$latitude}]
+		});
+		var marker = new AMap.Marker({
+			icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+			position: [{$longitude}, {$latitude}]
+		});
+
+		marker.setMap(map);
+
+		var geocoder = new AMap.Geocoder({
+			radius: 1000 //范围，默认：500
+		});
+
+		AMap.event.addListener(map, 'click', getLnglat); //点击事件
+
+		/**
+		 * 点击获取坐标
+		 * @param e
+		 */
+		function getLnglat(e) {
+			map.clearMap();
+			var x = e.lnglat.getLng();
+			var y = e.lnglat.getLat();
+			$('#lon').val(x);
+			$('#lat').val(y);
+			// getAddress(x,y);
+			var marker = new AMap.Marker({
+				icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+				position: [x, y]
+			});
+			marker.setMap(map);
+		}
+
+		//地图搜索----新增的搜索功能
+		$("#amapsearch").click(function(){
+			var keyword=$("#keyword").val();
+			if(keyword.length>0){
+				$.get("https://restapi.amap.com/v3/assistant/inputtips?key=58b677d10ae9883ea25e21578582daac&keywords="+keyword, function(result){
+					if(result.status==1){
+						map.clearMap();
+						var location=result.tips[0].location;
+						//结果中如果第一个没有值则使用第二个
+						try {
+							var locat_arr=location.split(",");
+						}catch(err){
+							var location=result.tips[1].location;
+							var locat_arr=location.split(",");
+						}
+						var x = locat_arr[0];
+						var y = locat_arr[1];
+						$('#lon').val(x);
+						$('#lat').val(y);
+						// getAddress(x,y);
+						map.setCenter([x, y]);
+						var marker = new AMap.Marker({
+							icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+							position: [x, y]
+						});
+						marker.setMap(map);
+					}else{
+						layer.msg('暂无结果请重新输入关键字搜索');
+					}
+				});
+			}else{
+				layer.msg('请先在输入关键字');
+			}
+		});
+		$("#btnclick").click(function(){
+			if($("#lon").val().length<=0){
+				layer.msg('请先在地图上点选坐标');
+			}else{
+				//getAddress($("#lon").val(),$("#lat").val());
+				var lnglatXY = $("#lon").val()+','+$("#lat").val()+'';
+				geocoder.getAddress(lnglatXY, function(status, result) {
+					if (status === 'complete'&& result.regeocode) {
+						var address_all = result.regeocode.formattedAddress;
+						var province = result.regeocode.addressComponent
+								.province;
+						var city = result.regeocode.addressComponent
+								.city;
+						var district = result.regeocode.addressComponent
+								.district;
+						$("#add_").val(address_all);
+						$("#pro").val(province);
+						$("#cit").val(city);
+						$("#dis").val(district);
+
+						$("#longitude",window.parent.document).val($("#lon").val());
+						$("#latitude",window.parent.document).val($("#lat").val());
+						$("#address",window.parent.document).val($("#add_").val());
+						$("#province",window.parent.document).val($("#pro").val());
+						$("#city",window.parent.document).val($("#cit").val());
+						$("#area",window.parent.document).val($("#dis").val());
+						$("#address_box",window.parent.document).show();
+						$("#right_icon",window.parent.document).show();
+						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+						parent.layer.close(index); //再执行关闭
+					}else{
+						console.log(status+'--'+result);
+					}
+				});
+
+			}
+		});
+	});
+
+
+</script>
+{/block}

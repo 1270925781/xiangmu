@@ -1,0 +1,61 @@
+{extend name='admin@iframe_chart'}
+
+{block name="content"}
+<script src="__ROOT__/static/echarts.min.js"></script><!--引入echarts-->
+<div class="think-box-shadow">
+	<fieldset>
+		<legend>条件搜索</legend>
+		<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+			<div class="layui-form-item layui-inline">
+				<label class="layui-form-label">时间</label>
+				<div class="layui-input-inline">
+					<input name="create_at" id="create_at" value="{$create_at|default=''}" placeholder="请选择时间" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item layui-inline">
+				<button class="layui-btn layui-btn-primary" onclick="formsearch()"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+			</div>
+		</form>
+	</fieldset>
+
+	<div id="main" style="width:100%;height:400px;"></div>
+</div>
+<script>
+	
+    function formsearch(){
+		var create_at=$('#create_at').val();
+		location.href = "{:url('yschartline')}?linetype={$linetype}&create_at="+create_at;
+	}
+
+	layui.use(['form', 'laydate'], function(){
+		var form = layui.form;
+		var laydate = layui.laydate;
+		form.render();
+		laydate.render({range: true, elem: '[name="create_at"]'})
+	});
+
+	var myChart = echarts.init(document.getElementById('main'));
+	// 指定图表的配置项和数据
+	var option = {
+		tooltip:{
+			show:true,
+			formatter: '{b0}: {c0}{$unit}'
+		},
+		xAxis: {
+			type: 'category',
+			data: {php}echo json_encode($tongji_day);{/php},
+		},
+		yAxis: {
+			type: 'value'
+		},
+		series: [{
+			data: {$tongji_count},
+			type: 'line'
+		}]
+	};
+	myChart.setOption(option);
+	window.addEventListener('resize', function () {
+		  myChart.resize()
+	});
+</script> 
+{/block}

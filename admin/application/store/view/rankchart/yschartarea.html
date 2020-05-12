@@ -1,0 +1,58 @@
+{extend name='admin@iframe_chart'}
+
+{block name="content"}
+<div class="think-box-shadow">
+	<fieldset>
+		<legend>条件搜索</legend>
+		<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+			<div class="layui-form-item layui-inline">
+				<label class="layui-form-label">时间</label>
+				<div class="layui-input-inline">
+					<input name="create_at" id="create_at" value="{$create_at|default=''}" placeholder="请选择时间" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item layui-inline">
+				<button class="layui-btn layui-btn-primary" onclick="formsearch()"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+			</div>
+		</form>
+		<script>
+			form.render();
+			laydate.render({range: true, elem: '[name="create_at"]'})
+		</script>
+	</fieldset>
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>序号</th>
+			<th class='text-left nowrap'>地区</th>
+            <th class='text-left nowrap'>{$numtitle}</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left'>{$key+1}</td>
+			<td class='text-left'>{$vo.area|default='--'}</td>
+            <td class='text-left'>{$vo.counts|default='0'}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+<script>	
+    function formsearch(){
+		var create_at=$('#create_at').val();
+		location.href = "{:url('yschartline')}?linetype={$linetype}&create_at="+create_at;
+	}
+
+	layui.use(['form', 'laydate'], function(){
+		var form = layui.form;
+		var laydate = layui.laydate;
+		form.render();
+		laydate.render({range: true, elem: '[name="create_at"]'})
+	});
+</script>
+{/block}

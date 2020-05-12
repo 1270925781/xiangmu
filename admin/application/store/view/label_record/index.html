@@ -1,0 +1,31 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='label_record/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>标签名称</th>
+            <th class='text-left nowrap'>用户名</th>
+            <th class="text-center">点击时间</th>
+            <!--<th>操作</th>-->
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left nowrap'>
+                {$vo.title|default=''}
+            </td>
+            <td>{$vo.username|default=''}</td>
+            <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

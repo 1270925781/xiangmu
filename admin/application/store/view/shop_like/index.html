@@ -1,0 +1,50 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='shop_like/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>展厅名称</th>
+            <th class='text-left nowrap'>用户名</th>
+            <th class='text-left nowrap'>状态</th>
+            <th class="text-center">点赞时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left nowrap'>
+                <!--<a data-tips-image="{$vo.logo|default=''}" class="fa fa-image font-s14 margin-right-5"></a>-->
+                {$vo.title|default=''}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.username|default=''}
+            </td>
+              <td>
+                {eq name="vo.status" value="1"}
+                    点赞
+                {else}
+                    取消点赞
+                {/eq}
+            </td>
+            <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+
+              <!---->
+                <!--{if auth("store/shop_view/remove")}-->
+                <!--<a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>-->
+                <!--{/if}-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

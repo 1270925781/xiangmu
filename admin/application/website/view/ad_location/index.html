@@ -1,0 +1,64 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+	<fieldset>
+		<legend>条件搜索</legend>
+		<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+			<div class="layui-form-item layui-inline">
+				<label class="layui-form-label">广告名称</label>
+				<div class="layui-input-inline">
+					<input name="name" value="{$Think.get.name|default=''}" placeholder="请输入广告位名称" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item layui-inline">
+				<label class="layui-form-label">平台类型</label>
+				<div class="layui-input-inline">
+					<select class="layui-select" name="platform_type" lay-search>
+						<option value="">-- 全部 --</option>
+						{foreach $platform_type as $v}
+						{eq name='Think.get.platform_type' value='$v.id.""'}
+						<option selected value="{$v.id}">{$v.name}</option>
+						{else}
+						<option value="{$v.id}">{$v.name}</option>
+						{/eq}
+						{/foreach}
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item layui-inline">
+				<button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+			</div>
+		</form>
+		<script>form.render()</script>
+	</fieldset>
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>广告位置</th>
+			<th class="text-left">平台类型</th>
+            <th class="text-center">状态</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td>{$vo.name}</td>
+			<td>{$vo.platform_name}</td>
+            <td class='text-center nowrap'>
+                {eq name='vo.status' value='0'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}<br>
+            </td>
+            <td class='text-left nowrap'>
+
+              
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

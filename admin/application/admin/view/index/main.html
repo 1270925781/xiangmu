@@ -1,0 +1,168 @@
+{extend name='main'}
+
+{block name='content'}
+
+<style>
+
+    .store-total-container {
+        font-size: 14px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .store-total-container .store-total-icon {
+        top: 45%;
+        right: 8%;
+        font-size: 65px;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .store-total-container .store-total-item {
+        color: #fff;
+        line-height: 4em;
+        padding: 15px 25px;
+        position: relative;
+    }
+
+    .store-total-container .store-total-item > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+    }
+
+</style>
+
+<div class="think-box-shadow store-total-container notselect">
+    <div class="margin-bottom-15">系统统计</div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6 layui-col-md3" {if $shop_id!=''}style="display:none;"{/if}>
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2);line-height: 2em;">
+                <div>展厅总量</div>
+                <div>{$shopcount}</div>
+                <div>当前展厅总数量</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95);line-height: 2em;">
+                <div>产品总量</div>
+                <div>{$goodscount}</div>
+                <div>当前产品总数量</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-read"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3" {if $shop_id!=''}style="display:none;"{/if}>
+            <div class="store-total-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3);line-height: 2em;">
+                <div>用户总量</div>
+                <div>{$usercount}</div>
+                <div>当前用户总数量</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-user"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3" {if $shop_id!=''}style="display:none;"{/if}>
+            <div class="store-total-item nowrap" style="background:linear-gradient(-141deg,#ecca1b,#f39526);line-height: 2em;">
+                <div>---</div>
+                <div>--</div>
+                <div>----</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-survey"></i>
+        </div>
+    </div>
+</div>
+
+
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6">
+        <div class="think-box-shadow">
+            <table class="layui-table" lay-skin="line" lay-even>
+                <caption class="text-left margin-bottom-15 font-s14">环境信息</caption>
+                <colgroup>
+                    <col width="30%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>当前程序版本</td>
+                    <td>{:sysconf('app_version')}</td>
+                </tr>
+                <tr>
+                    <td>运行PHP版本</td>
+                    <td>{$Think.PHP_VERSION}</td>
+                </tr>
+                <tr>
+                    <td>ThinkPHP版本</td>
+                    <td>{$think_ver}</td>
+                </tr>
+                <tr>
+                    <td>MySQL数据库版本</td>
+                    <td>{$mysql_ver}</td>
+                </tr>
+                <tr>
+                    <td>服务器操作系统</td>
+                    <td>{:php_uname('s')}</td>
+                </tr>
+                <tr>
+                    <td>WEB运行环境</td>
+                    <td>{:php_sapi_name()}</td>
+                </tr>
+                <tr>
+                    <td>上传大小限制</td>
+                    <td>{:ini_get('upload_max_filesize')}</td>
+                </tr>
+                <tr>
+                    <td>POST大小限制</td>
+                    <td>{:ini_get('post_max_size')}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="think-box-shadow">
+            <table class="layui-table" lay-skin="line" lay-even>
+                <caption class="text-left margin-bottom-15 font-s14">产品团队</caption>
+                <colgroup>
+                    <col width="30%">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td>产品名称</td>
+                    <td>地毯汇后台管理系统1.0</td>
+                </tr>
+				{if $shop_id==''}
+                <tr>
+                    <td>开发团队</td>
+                    <td><a href="http://www.yunshanghulian.com" target="_blank">陕西云上互联信息科技有限公司</a></td>
+                </tr>
+                <tr>
+                    <td>团队官网</td>
+                    <td><a target="_blank" href="http://www.yunshanghulian.com">http://www.yunshanghulian.com</a></td>
+                </tr>
+                <tr>
+                    <td>办公地址</td>
+                    <td>陕西省西安市新城区</td>
+                </tr>
+                <tr>
+                    <td>客服电话</td>
+                    <td>400-116-2626</td>
+                </tr>
+                <tr>
+                    <td>服务时间</td>
+                    <td>9:00-18:00(周一到周日)</td>
+                </tr>
+				<tr>
+                    <td>联系我们</td>
+                    <td>sxyshhl@163.com</td>
+                </tr>
+				{/if}
+				<tr>
+                    <td>联系管理员</td>
+                    <td>云上太阳</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div style="text-align:center;margin-top:100px">{:sysconf('site_copy')}</div>
+
+{/block}

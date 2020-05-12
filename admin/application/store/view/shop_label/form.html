@@ -1,0 +1,135 @@
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card-body">
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">展厅名称</label>
+            <label class="layui-col-xs10">
+                <input name="title" required value='{$vo.title|default=""}' placeholder="请输入展厅名称" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">展厅地址</label>
+            <label class="layui-col-xs10">
+                <input name="address" required value='{$vo.address|default=""}' placeholder="请输入展厅地址" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">联系人</label>
+            <label class="layui-col-xs10">
+                <input name="contacts" required value='{$vo.contacts|default=""}' placeholder="请输入联系人" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">联系电话</label>
+            <label class="layui-col-xs10">
+                <input name="phone" required value='{$vo.phone|default=""}' placeholder="请输入联系电话" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">二维码</label>
+            <label class="layui-col-xs10">
+                <input name="qr_code" required type="hidden" value="{$vo.qr_code|default=''}">
+            </label>
+            <script>$('[name="qr_code"]').uploadOneImage()</script>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">营业执照</label>
+            <label class="layui-col-xs10">
+                <input name="business_license" required type="hidden" value="{$vo.business_license|default=''}">
+            </label>
+            <script>$('[name="business_license"]').uploadOneImage()</script>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">经营许可证</label>
+            <label class="layui-col-xs10">
+                <input name="business_certificate" required type="hidden" value="{$vo.business_certificate|default=''}">
+            </label>
+            <script>$('[name="business_certificate"]').uploadOneImage()</script>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">视频地址</label>
+            <label class="layui-col-xs10">
+                <input name="video_url" required value='{$vo.video_url|default=""}' placeholder="请输入视频地址" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">VR地址</label>
+            <label class="layui-col-xs10">
+                <input name="vr_url" required value='{$vo.vr_url|default=""}' placeholder="请输入VR地址" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">简介</label>
+            <textarea name="intro">{$vo.intro|default=''|raw}</textarea>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">是否推荐到首页</label>
+            <input name="is_home" type="radio" value="1" />是
+            <input name="is_home" type="radio" value="2" />否
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">首页排序</label>
+            <label class="layui-col-xs10">
+                <input name="home_sort" value='{$vo.home_sort|default=""}' placeholder="请输入首页排序" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label for="location_min" class="layui-col-xs2 think-form-label"><span >开始时间：</span></label>
+            <input type="datetime-local" name="home_start_time" value="2020-01-04T19:00:00"/>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label for="location_min" class="layui-col-xs2 think-form-label"><span >结束时间：</span></label>
+            <input type="datetime-local" name="home_end_time" value="2020-01-04T19:00:00"  />
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">是否推荐到微社区</label>
+            <input name="is_minisns" type="radio" value="1" />是
+            <input name="is_minisns" type="radio" value="2" />否
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">微社区排序</label>
+            <label class="layui-col-xs10">
+                <input name="minisns_sort" value='{$vo.minisns_sort|default=""}' placeholder="请输入微社区排序" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label for="location_min" class="layui-col-xs2 think-form-label"><span >开始时间：</span></label>
+            <input type="datetime-local" name="minisns_start_time" value="2020-01-04T19:00:00"/>
+        </div>
+
+        <div class="layui-row margin-bottom-15">
+            <label for="location_min" class="layui-col-xs2 think-form-label"><span >结束时间：</span></label>
+            <input type="datetime-local" name="minisns_end_time" value="2020-01-04T19:00:00"  />
+        </div>
+
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        <button class="layui-btn" type='submit'>保存</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消操作吗？" data-close>取消</button>
+    </div>
+</form>
+<script>
+    window.form.render();
+    require(['ckeditor', 'angular'], function () {
+        window.createEditor('[name="intro"]', {height: 500});
+    });
+</script>

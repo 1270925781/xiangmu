@@ -1,0 +1,126 @@
+{extend name='admin@main'}
+
+{block name="button"}
+<!--{if auth("store/goods/add")}-->
+<button data-modal='{:url("add")}' data-title="添加产品" class='layui-btn layui-btn-sm layui-btn-primary'>添加产品</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='goods/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            <th class='text-center'  style="max-width:150px;word-wrap: break-word;word-break: normal;">产品名称</th>
+            <th class='text-center' >所属展厅</th>
+            <th class='text-center' width="8%" >所属分类</th>
+            <th class='text-center' width="8%" >是否推荐</th>
+            <th class='text-center' >是否爆款</th>
+            <th class='text-center' >是否新品</th>
+            <th class='text-center' >状态</th>
+            <th class='text-center' >添加时间</th>
+            <th class='text-center nowrap' width="10%">操作</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='list-table-sort-td'><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></td>
+            <td class='text-center' style="max-width:150px;word-wrap: break-word;word-break: normal;">{$vo.title|default='--'}</td>
+            <td class='text-center' >{$vo.shop_name|default='--'}</td>
+            <td class='text-center'>{$vo.cate.title|default='--'}</td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_recommend' value='2'}<span class="layui-badge">否</span>{else}<span class="layui-badge layui-bg-green">是</span>{/eq}<br>
+            </td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_hot' value='2'}<span class="layui-badge">否</span>{else}<span class="layui-badge layui-bg-green">是</span>{/eq}<br>
+                {eq name='vo.is_hot' value='1'}
+                {eq name='vo.hot_is_over' value='1'}
+                <span class="layui-badge" style="display: inline">
+                        {$vo.hot_start_time}~ <br>
+                        {$vo.hot_end_time}
+                    </span>
+                {else}
+                <span>
+                        {$vo.hot_start_time}~ <br>
+                        {$vo.hot_end_time}
+                    </span>
+                {/eq}
+                {/eq}
+            </td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_new' value='2'}<span class="layui-badge">否</span>{else}<span class="layui-badge layui-bg-green">是</span>{/eq}<br>
+                {eq name='vo.is_new' value='1'}
+                {eq name='vo.new_is_over' value='1'}
+                <span class="layui-badge" style="display: inline">
+                        {$vo.new_start_time}~ <br>
+                        {$vo.new_end_time}
+                    </span>
+                {else}
+                <span>
+                        {$vo.new_start_time}~ <br>
+                        {$vo.new_end_time}
+                    </span>
+                {/eq}
+                {/eq}
+            </td>
+            <td class='text-center nowrap'>
+                 总平台：{if $vo.is_show_main eq 2}<span class="layui-badge">已禁用</span>{elseif $vo.is_show_main eq 1}<span class="layui-badge layui-bg-green">使用中</span>{/if}<br>
+                展厅：{if $vo.is_show_second eq 2}<span class="layui-badge">已下架</span>{elseif $vo.is_show_second eq 1}<span class="layui-badge layui-bg-green">已上架</span>{/if}<br>
+            </td>
+            <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+                <div class="nowrap margin-bottom-5">
+                    {if auth("store/goods/edit")}
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑【{$vo.title|default='--'}】">编 辑</a>
+                    {else}
+                    <a data-tips-text="您没有编辑产品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
+                    {/if}
+
+                    {if $authorize==2}
+                    {if isset($vo.is_show_second) and $vo.is_show_second eq 1}
+                    <!--{if auth("store/goods/forbid")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};is_show_second#2">禁 用</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有禁用产品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">禁 用</a>
+                    <!--{/if}-->
+                    {elseif $vo.is_show_second eq 2}
+                    <!--{if auth("store/goods/resume")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};is_show_second#1">启 用</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有启用产品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">启 用</a>
+                    <!--{/if}-->
+                    {/if}
+                    {else}
+                    {if isset($vo.is_show_main) and $vo.is_show_main eq 1}
+                    <!--{if auth("store/goods/forbid")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};is_show_main#2">禁 用</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有禁用产品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">禁 用</a>
+                    <!--{/if}-->
+                    {elseif $vo.is_show_main eq 2}
+                    <!--{if auth("store/goods/resume")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};is_show_main#1">启 用</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有启用产品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">启 用</a>
+                    <!--{/if}-->
+                    {/if}
+                    {/if}
+
+                </div>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

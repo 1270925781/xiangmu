@@ -1,0 +1,275 @@
+{extend name='admin@main'}
+{block name="content"}
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card-body think-box-shadow padding-left-40">
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-col-xs5 relative">
+                <span class="color-green">展厅名称</span>
+                <input name="title" required value='{$vo.title|default=""}' placeholder="请输入展厅名称" class="layui-input" maxlength="30">
+            </label>
+            <label class="layui-col-xs6 relative">
+                <span class="color-green">联系人</span>
+                <input name="contacts" required value='{$vo.contacts|default=""}' placeholder="请输入联系人" class="layui-input" maxlength="15">
+            </label>
+        </div>
+
+        <div class="layui-row layui-row layui-col-space15">
+            <label class="layui-col-xs5 relative">
+                <span class="color-green">联系电话</span>
+                <input type="tel" maxlength="15" autocomplete="off" autofocus="" name="phone" value='{$vo.phone|default=""}' pattern="^[0-9]*$" placeholder="请输入联系手机" class="layui-input" required validate-error>
+            </label>
+            <label class="layui-col-xs6 relative">
+                <span class="color-green">微信号</span>
+                <input type="tel" maxlength="30" autocomplete="off" autofocus name="wechat" value='{$vo.wechat|default=""}'  placeholder="请输入微信号" class="layui-input" >
+            </label>
+        </div>
+
+        <div class="layui-row layui-row layui-col-space15">
+            <label class="layui-col-xs5 relative">
+                <span class="color-green">视频地址</span>
+                <input name="video_url"  value='{$vo.video_url|default=""}' placeholder="请输入视频地址" class="layui-input">
+            </label>
+            <label class="layui-col-xs6 relative">
+                <span class="color-green">VR地址</span>
+                <input name="vr_url"  value='{$vo.vr_url|default=""}' placeholder="请输入VR地址" class="layui-input">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-col-xs5 relative">
+                <span class="color-green">标签</span>
+                <input name="labels" value='{$vo.labels|default=""}' placeholder="请输入标签名称" class="layui-input">
+                <p class="color-red help-block">标签名称，以英文','分隔，每个标签最多3个字，标签最多只能添加4个。</p>
+            </label>
+            <label class="layui-col-xs6 relative">
+                <span class="color-green">分类</span>
+                <select class="layui-select" name="cate_id" lay-search required>
+                    <!--<option value="">&#45;&#45; 全部分类 &#45;&#45;</option>-->
+                    {foreach $clist as $v}
+                    <!--{eq name='$vo.cate_id' value='$v.id.""'}-->
+                    <option selected value="{$v.id}">{$v.title}</option>
+                    <!--{else}-->
+                    <option value="{$v.id}">{$v.title}</option>
+                    <!--{/eq}-->
+                    {/foreach}
+                </select>
+            </label>
+        </div>
+
+        <div class="layui-form-item">
+            <span class="color-green label-required-prev">展厅logo、营业执照、经营许可证<span class="color-red font-s12">（logo尺寸宽90*高90，执照、许可证尺寸宽720，最大5M）</span></span>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th class="text-center">展厅logo</th>
+                    <th class="text-center">营业执照</th>
+                    <th class="text-center">经营许可证</th>
+                </tr>
+                <tr>
+                    <td width="90px" class="text-center"><input name="logo" type="hidden" value="{$vo.logo|default=''}"></td>
+                    <td width="90px" class="text-center"><input name="business_license" type="hidden" value="{$vo.business_license|default=''}"></td>
+                    <td width="90px" class="text-center"><input name="business_certificate" type="hidden" value="{$vo.business_certificate|default=''}" required></td>
+                </tr>
+                </thead>
+            </table>
+            <script>$('[name="logo"]').uploadOneImage(),$('[name="business_license"]').uploadOneImage(), $('[name="business_certificate"]').uploadOneImage()</script>
+        </div>
+
+        <div class="layui-form-item">
+            <span class="color-green label-required-prev">封面图、轮播图<span class="color-red font-s12">（封面图、轮播图尺寸宽720*高540，最大5M）</span></span>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th class="text-center">封面图</th>
+                    <th class="text-left">轮播图</th>
+                </tr>
+                <tr>
+                    <td width="90px" class="text-center"><input name="cover_image" type="hidden" value="{$vo.cover_image|default=''}"></td>
+                    <td width="auto" class="text-left"><input name="slide_show" type="hidden" value="{$vo.slide_show|default=''}"></td>
+                </tr>
+                </thead>
+            </table>
+            <script>$('[name="cover_image"]').uploadOneImage(), $('[name="slide_show"]').uploadMultipleImage()</script>
+        </div>
+
+        <div class="layui-form-item">
+            <span class="color-green ">首页推荐展厅封面图<span class="color-red font-s12">（首页推荐展厅封面图尺寸宽720*高280，最大5M）</span></span>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th class="text-center">首页推荐展厅封面图</th>
+                </tr>
+                <tr>
+                    <td width="90px" class="text-center"><input name="home_cover_image" type="hidden" value="{$vo.home_cover_image|default=""}"></td>
+                </tr>
+                </thead>
+            </table>
+            <script>$('[name="home_cover_image"]').uploadOneImage()</script>
+        </div>
+
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-col-xs3 ">
+                <span class="color-green">是否推荐到首页</span>
+                <div class="layui-block">
+                    <input type="hidden" id="is_home" name="is_home" value="{$vo['is_home']}">
+                    <input type="radio" name="ishome" value="1" title="是" {if condition="$vo['is_home'] eq 1"}checked{/if} lay-filter="is_home"/>
+                    <input type="radio" name="ishome" value="2" title="否" {if condition="$vo['is_home'] eq 2"}checked{/if} lay-filter="is_home" />
+                </div>
+            </label>
+            <div id="home_box" style="display: none">
+                <label class="layui-col-xs2 ">
+                    <span class="color-green">首页排序</span>
+                    <input name="home_sort" value='{$vo.home_sort|default=""}' placeholder="请输入首页排序" class="layui-input">
+                </label>
+                <label class="layui-col-xs3" style="margin-left: 20px">
+                    <span class="color-green" >开始时间</span>
+                    <input type="text" name="home_start_time" value='{$vo.home_start_time|default=""}' style="width:150px;height: 38px;" placeholder="请选择开始时间" class="layui-input" readonly/>
+                </label>
+                <label class="layui-col-xs3 ">
+                    <span class="color-green" >结束时间</span>
+                    <input type="text" name="home_end_time" value='{$vo.home_end_time|default=""}' style="width:150px;height: 38px;" placeholder="请选择结束时间" class="layui-input" readonly/>
+                </label>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-col-xs3 ">
+                <span class="color-green">是否推荐到微社区</span>
+                <div class="layui-block">
+                    <input type="hidden" id="is_minisns" name="is_minisns" value="{$vo['is_minisns']}">
+                    <input type="radio" name="isminisns" value="1" title="是" {if condition="$vo['is_minisns'] eq 1"}checked{/if} lay-filter="is_minisns"/>
+                    <input type="radio" name="isminisns" type="radio" value="2" title="否" {if condition="$vo['is_minisns'] eq 2"}checked{/if} lay-filter="is_minisns" />
+                </div>
+            </label>
+
+            <div id="mini_box" style="display: none">
+                <label class="layui-col-xs2 ">
+                    <span class="color-green">微社区排序</span>
+                    <input name="minisns_sort" value='{$vo.minisns_sort|default=""}' placeholder="请输入微社区排序" class="layui-input">
+                </label>
+                <label class="layui-col-xs3" style="margin-left: 20px">
+                    <span class="color-green" >开始时间</span>
+                    <input type="text" name="minisns_start_time" value='{$vo.minisns_start_time|default=""}' style="width:150px;height: 38px;" placeholder="请选择开始时间" class="layui-input" readonly/>
+                </label>
+                <label class="layui-col-xs3 ">
+                    <span class="color-green" >结束时间</span>
+                    <input type="text" name="minisns_end_time" value='{$vo.minisns_end_time|default=""}' style="width:150px;height: 38px;" placeholder="请选择结束时间" class="layui-input" readonly/>
+                </label>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-col-xs3" >
+                <span class="color-green" >展厅使用开始时间</span>
+                <input type="text" name="use_start_time" value='{$vo.use_start_time|default=""}' style="width:150px;height: 38px;" placeholder="请选择开始时间" class="layui-input" readonly/>
+            </label>
+            <label class="layui-col-xs4">
+                <span class="color-green" >展厅使用结束时间</span>
+                <input type="text" name="use_end_time" value='{$vo.use_end_time|default=""}' style="width:150px;height: 38px;" placeholder="请选择结束时间" class="layui-input" readonly />
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <input type="hidden" name="longitude" id="longitude" value="{$vo.longitude}"/>
+            <input type="hidden" name="latitude" id="latitude" value="{$vo.latitude}"/>
+            <label class="layui-input-inline layui-col-xs15 relative" style="width: 50%;">
+                <span class="color-green" style="cursor:pointer;" data-iframe="{:url('admin/publicv/amap')}?longitude={$vo.longitude|default=''}&latitude={$vo.latitude|default=''}" data-title="高德地图获取坐标" required>获取坐标</span>
+                <span class="color-green" id="right_icon" style="margin-left: 50px;display:none">√</span>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15" id="address_box" >
+            <label class="layui-col-xs relative">
+                <span class="color-green">展厅地址</span>
+                <input name="address" id="address" required value='{$vo.address|default=""}' placeholder="请输入展厅地址" class="layui-input" >
+            </label>
+        </div>
+
+        <input type="hidden" name="province" id="province" value="{$vo.province}" />
+        <input type="hidden" name="city" id="city" value="{$vo.city}"/>
+        <input type="hidden" name="area" id="area" value="{$vo.area}"/>
+
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">简介</span>
+            <textarea name="intro" class="layui-textarea">{$vo.intro|default=''}</textarea>
+        </div>
+
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">详情<span class="color-red font-s12">（图片尺寸宽720，最大5M）</span></span>
+            <textarea name="details">{$vo.details|default=''|raw}</textarea>
+        </div>
+
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        <button class="layui-btn" type='submit'>保存</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消操作吗？" data-close>取消</button>
+    </div>
+</form>
+
+<script>
+    var is_home = {$vo['is_home']};
+    var is_minisns = {$vo['is_minisns']};
+    var long = {$vo['longitude']};
+    if(long!=0){
+        $("#right_icon").show();
+    }
+    if(is_home == 1){
+        $("#home_box").show();
+    }
+    if(is_minisns == 1){
+        $("#mini_box").show();
+    }
+    window.form.render();
+    laydate.render({
+        elem: '[name="home_start_time"]',type: 'datetime'
+    });
+    laydate.render({
+        elem: '[name="home_end_time"]',type: 'datetime'
+    });
+    laydate.render({
+        elem: '[name="minisns_start_time"]',type: 'datetime'
+    });
+    laydate.render({
+        elem: '[name="minisns_end_time"]',type: 'datetime'
+    });
+
+    laydate.render({
+        elem: '[name="use_start_time"]',type: 'datetime'
+    });
+
+    laydate.render({
+        elem: '[name="use_end_time"]',type: 'datetime'
+    });
+
+    window.form.on("radio(is_home)", function (data) {
+        var value = data.value;
+        $('#is_home').val(value);
+        if (value == '1') {
+            $("#home_box").show();
+        } else {
+            $("#home_box").hide();
+        }
+    });
+
+    window.form.on("radio(is_minisns)", function (data) {
+        var value = data.value;
+        $('#is_minisns').val(value);
+        if (value == '1') {
+            $("#mini_box").show();
+        } else {
+            $("#mini_box").hide();
+        }
+    });
+
+    require(['ckeditor', 'angular'], function () {
+        window.createEditor('[name="details"]', {height: 500});
+    });
+
+</script>
+{/block}

@@ -1,0 +1,33 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>序号</th>
+			<th class='text-left nowrap'>展厅名称</th>
+            <th class='text-left nowrap'>联系人</th>
+            <th class='text-left nowrap'>联系电话</th>
+            <th class='text-left nowrap'>{$numtitle}</th>
+            <th class='text-left nowrap'>注册时间</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left'>{$key+1}</td>
+			<td class='text-left'>{$vo.title|default='--'}</td>
+			<td class='text-left'>{$vo.contacts|default='--'}</td>
+            <td class='text-left'>{$vo.phone|default='--'}</td>
+            <td class='text-left'>{$vo.count|default='0'}</td>
+            <td class='text-left'>{$vo.create_at|format_datetime}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

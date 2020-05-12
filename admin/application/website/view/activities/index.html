@@ -1,0 +1,93 @@
+{extend name='admin@main'}
+
+{block name="button"}
+<!--{if auth("website/activities/add")}-->
+<button data-modal='{:url("add")}' data-title="添加活动/展会" class='layui-btn layui-btn-sm layui-btn-primary'>添加活动/展会</button>
+<!--{/if}-->
+<!--{if auth("website/activities/remove")}-->
+<button data-action='{:url("remove")}' data-confirm="确定要删除选择的数据吗?" data-rule="id#{key}" class='layui-btn layui-btn-sm layui-btn-primary'>删除活动</button>
+<!--{/if}-->
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='activities/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            <th class='text-left nowrap' width="10%">活动名称</th>
+            <th class='text-left nowrap' width="10%">平台类型</th>
+            <th class='text-left nowrap' width="10%">活动分类</th>
+            <th class='text-left nowrap' width="10%">活动场地</th>
+            <th class='text-left nowrap' width="10%">活动类型</th>
+            <th class='text-left nowrap' width="20%">活动时间</th>
+            <th class='text-left nowrap' width="10%">发布时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='list-table-check-td think-checkbox'><input class="list-check-box" value='{$vo.id}' type='checkbox'></td>
+            <td class='list-table-sort-td'><input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input"></td>
+
+            <td>{$vo.name|default='--'}</td>
+            <td>{$vo.plat_type|default='--'}</td>
+            <td>{$vo.cate|default='--'}</td>
+            <td>{$vo.address|default='--'}</td>
+            <td>
+				{$vo.type|default='--'}
+				{if $vo.type=='收费'}
+				<br>{$vo.price}/人
+				{/if}
+			</td>
+            <td>开始：{$vo.start_time|default='--'}<br>结束：{$vo.end_time|default='--'}</td>
+            <td>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+                <div class="nowrap margin-bottom-5">
+                    {if auth("website/activities/edit")}
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑【{$vo.name|default='--'}】">编 辑</a>
+                    {else}
+                    <a data-tips-text="您没有编辑活动的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
+                    {/if}
+
+                    {if auth("website/activities/remove")}
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                    {else}
+                    <a data-tips-text="您没有删除活动的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">删 除</a>
+                    {/if}
+
+					{if isset($vo.status) and $vo.status eq 1}
+                    <!--{if auth("website/activities/forbid")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};status#0">隐 藏</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有隐藏活动的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">隐 藏</a>
+                    <!--{/if}-->
+                    {else}
+                    <!--{if auth("website/activities/resume")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};status#1">显 示</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有显示活动的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">显 示</a>
+                    <!--{/if}-->
+                    {/if}
+
+                </div>
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

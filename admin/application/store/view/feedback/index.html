@@ -1,0 +1,56 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='feedback/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-center' >反馈人</th>
+			<th class='text-center' >反馈平台</th>
+            <th class='text-center' >反馈内容</th>
+            <th class='text-center' >反馈时间</th>
+            <th class='text-center' >是否处理</th>
+            <th class='text-center nowrap'>操作</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='text-center' >{$vo.username|default='--'}</td>
+            <td class='text-center'>{$vo.platform|default='--'}</td>
+            <td class='text-left'>{$vo.content|default='--'}</td>
+            <td class='text-center'>{$vo.addtime|default='--'}</td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_handle' value='2'}<span class="layui-badge">未处理</span>{else}<span class="layui-badge layui-bg-green">已处理</span>{/eq}<br>
+            </td>
+            <td class='text-left nowrap'>
+                    {if $vo.is_handle eq 2}
+                        {if auth("store/goods/forbid")}
+                        <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('handle')}" data-value="id#{$vo.id};status#0">处 理</a>
+                        {else}
+                        <a data-tips-text="您没有下架商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">处 理</a>
+                        {/if}
+                    {/if}
+<!--                <div class="nowrap margin-bottom-5">
+
+                    {if auth("store/goods/remove")}
+                    <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                    {else}
+                    <a data-tips-text="您没有删除商品的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">删 除</a>
+                    {/if}
+
+                </div>-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

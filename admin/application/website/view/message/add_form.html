@@ -1,0 +1,171 @@
+<form onsubmit="return false;" style="height: 430px" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card-body" id="add_form">
+        <div class="layui-form-item layui-row">
+            <label class="layui-col-xs2 think-form-label">消息标题</label>
+            <label class="layui-col-xs10">
+                <input style="margin-left:15px" required name="title" class="layui-input" placeholder="请输入消息标题" value="{$vo.title|default=''}">
+            </label>
+        </div>
+        <div style="display: flex;margin-left: 9px;" class="layui-form-item layui-row">
+            <div class="layui-row" style="display: flex;width:300px;margin-left: 40px">
+                <label class="layui-col-xs2 think-form-label" style="width: 75px;padding: 9px 10px">发送对象</label>
+                <label class="layui-col-xs8 think-form-group-left" style="margin-left:15px">
+                    <select class="layui-select" required name="push_obj" style="width:200px;display: none">
+                        <option value="">-- 全部 --</option>
+                        {foreach $push as $po}
+                            {if isset($vo.push_obj) and $vo.push_obj eq $po.id}
+                            <option selected value="{$po.id}">{$po.name|default=''}</option>
+                            {else}
+                            <option value="{$po.id}">{$po.name|default=''}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                </label>
+            </div>
+            <div class="layui-row " style="display: flex;width:300px">
+                <label class="layui-col-xs2 think-form-label" style="width: 75px;padding: 9px 10px">消息类型</label>
+                <label class="layui-col-xs8 think-form-group-left" style="margin-left:15px">
+                    <select class="layui-select" required name="type" lay-search style="width:150px;display: none">
+                        <option value="">-- 全部 --</option>
+                        {foreach $type as $t1}
+                            {if isset($vo.type) and $vo.type eq $t1.id}
+                            <option selected value="{$t1.id}">{$t1.name|default=''}</option>
+                            {else}
+                            <option value="{$t1.id}">{$t1.name|default=''}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div style="display: flex;margin-left: 9px;" class="layui-form-item layui-row">
+            <div class="layui-row" style="display: flex;width:300px;margin-left: 40px">
+                <label class="layui-col-xs2 think-form-label" style="width: 75px;padding: 9px 10px">跳转类型</label>
+                <label class="layui-col-xs8 think-form-group-left" style="margin-left:15px">
+                    <select class="layui-select" name="jump_type" id="jump_type" lay-filter="college" style="width:150px;display: none">
+                        <option value="">-- 全部 --</option>
+                        {foreach $jumptype as $jtype}
+                            {if isset($vo.jump_type) and $vo.jump_type eq $jtype.id}
+                            <option selected value="{$jtype.id}">{$jtype.name|default=''}</option>
+                            {else}
+                            <option value="{$jtype.id}">{$jtype.name|default=''}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                </label>
+            </div>
+            <a id="store" style="display: none;margin-top: 3px" data-dbclick class="layui-btn layui-btn-sm"  data-iframe='{:url("admin/publicv/shop")}' data-title="获取ID">获取ID</a> <!--展厅ID-->
+            <a id="exhibition" style="display: none" data-dbclick class="layui-btn layui-btn-sm" data-iframe='{:url("admin/publicv/zhanhui")}' data-title="获取ID">获取ID</a> <!--展会ID-->
+            <a id="activity" style="display: none" data-dbclick class="layui-btn layui-btn-sm" data-iframe='{:url("admin/publicv/huodong")}' data-title="获取ID">获取ID</a> <!--活动ID-->
+            <a id="goods" style="display: none" data-dbclick class="layui-btn layui-btn-sm" data-iframe='{:url("admin/publicv/goods")}' data-title="获取ID">获取ID</a> <!--产品ID-->
+            <a id="news" style="display: none" data-dbclick class="layui-btn layui-btn-sm" data-iframe='{:url("admin/publicv/news")}' data-title="获取ID">获取ID</a> <!--新闻ID-->
+        </div>
+        <div class="layui-form-item layui-row" id="jump">
+            <label class="layui-col-xs2 think-form-label">跳转ID</label>
+            <label class="layui-col-xs10">
+                <input readonly="readonly" style="margin-left:15px" name="jump_id" id="jump_id" class="layui-input" placeholder="请输入跳转ID" value="{$vo.jump_id|default=''}">
+            </label>
+        </div>
+        <div class="layui-form-item layui-row"  style="display: none"  id="jump_url">
+            <label class="layui-col-xs2 think-form-label">跳转地址</label>
+            <label class="layui-col-xs10">
+                <input style="margin-left:15px" name="jump_url" class="layui-input" placeholder="请输入跳转路径" value="{$vo.jump_url|default=''}">
+            </label>
+        </div>
+        <div class="layui-form-item layui-row">
+             <label class="layui-col-xs2 think-form-label">消息内容</label>
+             <label class="layui-col-xs10">
+                 <textarea name="content" required style="height: 130px;margin-left: 15px;width:100%;resize:none;border-color: #D2D2D2!important;" maxlength="200">{$vo.content|default=''|raw}</textarea>
+             </label>
+        </div>
+
+        <div class="layui-form-item text-center" >
+                {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+                <button class="layui-btn" type='submit'>保存</button>
+                <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消操作吗？" data-close>取消</button>
+        </div>
+    </div>
+
+</form>
+<script>
+window.form.render();
+/*
+require(['ckeditor', 'angular'], function () {
+    var app = angular.module("MessageForm", []).run(callback);
+    angular.bootstrap(document.getElementById(app.name), [app.name]);
+})
+*/
+layui.use(['form'], function(){
+    var form = layui.form;
+    form.on('select(college)', function (data) {
+        var message=$("#jump_type").val();
+        if(message == 1){
+            $('#jump').css("display","block");
+            $('#jump_url').css("display","none");
+            $('#store').css("display","block");
+            $('#exhibition').css("display","none");
+            $('#activity').css("display","none");
+            $('#goods').css("display","none");
+            $('#news').css("display","none");
+        }else if(message == 2){
+            $('#jump').css("display","block");
+            $('#jump_url').css("display","none");
+            $('#exhibition').css("display","block");
+            $('#activity').css("display","none");
+            $('#store').css("display","none");
+            $('#goods').css("display","none");
+            $('#news').css("display","none");
+        }else if(message == 3){
+            $('#jump').css("display","block");
+            $('#jump_url').css("display","none");
+            $('#activity').css("display","block");
+            $('#goods').css("display","none");
+            $('#store').css("display","none");
+            $('#exhibition').css("display","none");
+            $('#news').css("display","none");
+        }else if(message == 4){
+            $('#jump').css("display","block");
+            $('#jump_url').css("display","none");
+            $('#news').css("display","none");
+            $('#activity').css("display","none");
+            $('#store').css("display","none");
+            $('#exhibition').css("display","none");
+            $('#goods').css("display","block");
+        }else if(message == 5){
+            $('#jump').css("display","block");
+            $('#jump_url').css("display","none");
+            $('#activity').css("display","none");
+            $('#store').css("display","none");
+            $('#exhibition').css("display","none");
+            $('#goods').css("display","none");
+            $('#news').css("display","block");
+        }else if(message == 6){
+            $('#jump').css("display","none");
+            $('#jump_url').css("display","block");
+            $('#activity').css("display","none");
+            $('#store').css("display","none");
+            $('#exhibition').css("display","none");
+            $('#goods').css("display","none");
+            $('#news').css("display","none");
+        }else{
+            $('#jump').css("display","block");
+            $('#jump_url').css("display","none");
+            $('#activity').css("display","none");
+            $('#store').css("display","none");
+            $('#exhibition').css("display","none");
+            $('#goods').css("display","none");
+            $('#news').css("display","none");
+        }
+     });
+});
+</script>
+
+<style>
+    #add_form .think-form-label{
+        padding: 9px 10px; 
+    }
+    #add_form .think-form-group-left input{
+        border-right: 1px solid #d2d2d2;
+    }
+</style>

@@ -1,0 +1,134 @@
+{extend name='admin@main'}
+
+{block name="button"}
+{if auth("store/shop/add")}
+<button data-modal='{:url("add")}' data-title="添加展厅" class='layui-btn layui-btn-sm layui-btn-primary'>添加展厅</button>
+{/if}
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='shop/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            {if $user.authorize neq 2}
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            {/if}
+            <th class='text-left nowrap' style="width:120px">展厅名称</th>
+            <th class='text-left nowrap'>分类</th>
+            <th class='text-left nowrap' style="width:50px">联系人</th>
+            <th class='text-left nowrap'>联系电话</th>
+            <th class='text-center nowrap'>展厅使用时间</th>
+            <th class='text-center nowrap'>是否首页推荐</th>
+            <th class='text-center nowrap'>是否微社区推荐</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">添加时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            {if $user.authorize neq 2}
+                <td class='list-table-sort-td'>
+                    <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+                </td>
+            {/if}
+            <td class='' >
+                {$vo.title|default=''}
+            </td>
+            <td>{$vo.cate_name|default=''}</td>
+            <td class=''>
+                {$vo.contacts|default=''}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.phone|default=''}
+            </td>
+             <td class='text-center nowrap'>
+             	{if $vo.use_start_time neq ''}
+                {eq name='vo.use_is_over' value='1'}
+                    <span class="layui-badge" style="display: inline">
+                        {$vo.use_start_time}~ <br>
+                        {$vo.use_end_time}
+                    </span>
+                {else}
+                    <span>
+                        {$vo.use_start_time}~ <br>
+                        {$vo.use_end_time}
+                    </span>
+                {/eq}
+            	{/if}
+            </td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_home' value='2'}<span class="layui-badge">否</span>{else}<span class="layui-badge layui-bg-green">是</span>{/eq}<br>
+                {eq name='vo.is_home' value='1'}
+                    {eq name='vo.home_is_over' value='1'}
+                        <span class="layui-badge" style="display: inline">
+                            {$vo.home_start_time}~ <br>
+                            {$vo.home_end_time}
+                        </span>
+                    {else}
+                        <span>
+                            {$vo.home_start_time}~ <br>
+                            {$vo.home_end_time}
+                        </span>
+                    {/eq}
+                {/eq}
+            </td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_minisns' value='2'}<span class="layui-badge">否</span>{else}<span class="layui-badge layui-bg-green">是</span>{/eq}<br>
+                {eq name='vo.is_minisns' value='1'}
+                    {eq name='vo.mini_is_over' value='1'}
+                    <span class="layui-badge" style="display: inline">
+                        {$vo.minisns_start_time}~ <br>
+                        {$vo.minisns_end_time}
+                    </span>
+                    {else}
+                    <span>
+                        {$vo.minisns_start_time}~ <br>
+                        {$vo.minisns_end_time}
+                    </span>
+                    {/eq}
+                {/eq}
+            </td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_freeze' value='1'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}<br>
+            </td>
+            <td class='text-center nowrap'>{$vo.create_date}<br>{$vo.create_time}</td>
+            <td class='text-left nowrap'>
+            	<a class="layui-btn layui-btn-normal layui-btn-sm" data-title="账号变更" data-modal='{:url("user_edit")}?id={$vo.id}'>账号变更</a>
+                {if auth("store/shop/edit")}
+                <a data-dbclick class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑【{$vo.title|default='--'}】">编 辑</a>
+                {/if}
+
+                <!--{if auth("store/shop/forbid")}-->
+                {if $vo.is_freeze eq 2 and auth("store/shop/forbid")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}?id={$vo.id}" data-value="id#{$vo.id};is_freeze#1">禁 用</a>
+                {elseif auth("store/shop/resume")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}?id={$vo.id}" data-value="id#{$vo.id};is_freeze#2">启 用</a>
+                {/if}
+                <!--{/if}-->
+
+                <!--{if auth("store/shop/remove")}-->
+                <!--<a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>-->
+                <!--{/if}-->
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

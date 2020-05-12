@@ -1,0 +1,38 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='users_service/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap'>服务名称</th>
+            <th class='text-left nowrap' >用户名</th>
+            <th class='text-left nowrap' >服务起始时间</th>
+            <th class='text-left nowrap' >服务截止时间</th>
+            <th class='text-left nowrap' >服务创建时间</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td>{$vo.title|default='--'}</td>
+            <td >{$vo.username|default='--'}</td>
+            <td>{$vo.start_time|format_datetime}</td>
+            {eq name='vo.is_over' value='1'}
+                <td class="layui-badge">{$vo.end_time|format_datetime}</td>
+            {else}
+                <td>{$vo.end_time|format_datetime}</td>
+            {/eq}
+            <td>{$vo.create_at|format_datetime}</td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

@@ -1,0 +1,46 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">展厅名称</label>
+            <div class="layui-input-inline">
+                <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入展厅名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">展厅分类</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="cate_id">
+                    <option value="">-- 全部分类 --</option>
+                    {foreach $clist as $k=>$v}
+                    <!--{eq name='Think.get.cate_id' value='$v.id.""'}-->
+                    <option selected value="{$v.id}">{$v.title}</option>
+                    <!--{else}-->
+                    <option value="{$v.id}">{$v.title}</option>
+                    <!--{/eq}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">使用状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="is_freeze">
+                    {foreach [''=>'- 全部状态 -','2'=>'使用中','1'=>'已禁用'] as $k=>$v}
+                    <!--{eq name='Think.get.is_freeze' value='$k.""'}-->
+                    <option selected value="{$k}">{$v}</option>
+                    <!--{else}-->
+                    <option value="{$k}">{$v}</option>
+                    <!--{/eq}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>&nbsp;
+            <span style="color:red">注：红色区域显示为剩余时间小于7天或已过期。</span>
+        </div>
+    </form>
+    <script>form.render()</script>
+</fieldset>

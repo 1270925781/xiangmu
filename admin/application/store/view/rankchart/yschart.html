@@ -1,0 +1,87 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<style>
+
+    .store-total-container {
+        font-size: 14px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .store-total-container .store-total-icon {
+        top: 45%;
+        right: 8%;
+        font-size: 65px;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .store-total-container .store-total-item {
+        color: #fff;
+        line-height: 4em;
+        padding: 15px 25px;
+        position: relative;
+    }
+
+    .store-total-container .store-total-item > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+    }
+
+</style>
+
+<div class="think-box-shadow store-total-container notselect">
+    <div class="margin-bottom-15">展厅统计</div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6 layui-col-md3" data-iframe="{:url('yschartline')}?linetype=shopviewline" data-title="展厅浏览日曲线">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2);line-height: 2em;">
+                <div>浏览日曲线</div>
+                <div>{$shopviewcount}</div>
+                <div>当日展厅浏览总数量</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3" data-iframe="{:url('yschartline')}?linetype=shopcollectline" data-title="展厅收藏日曲线">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95);line-height: 2em;">
+                <div>收藏日曲线</div>
+                <div>{$shopcollectcount}</div>
+                <div>当日展厅收藏总数量</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-user"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3" data-iframe="{:url('yschartline')}?linetype=shopviewarea" data-title="展厅浏览用户区域分布">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3);line-height: 2em;">
+                <div>浏览用户区域</div>
+                <div>{$shopviewareacount}</div>
+                <div>浏览用户区域分布</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-read"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3" data-iframe="{:url('yschartline')}?linetype=shopcollectarea" data-title="展厅收藏用户区域分布">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-141deg,#ecca1b,#f39526);line-height: 2em;">
+                <div>收藏用户区域</div>
+                <div>{$shopcollectareacount}</div>
+                <div>收藏用户区域分布</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-survey"></i>
+        </div>
+    </div>
+</div>
+
+{if !$shop_id}
+<div class="think-box-shadow store-total-container notselect">
+    <div class="margin-bottom-15">用户统计</div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6 layui-col-md3" data-iframe="{:url('yschartline')}?linetype=labeluse" data-title="用户增加曲线">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2);line-height: 2em;">
+                <div>用户增加曲线</div>
+                <div>{$membercount}</div>
+                <div>当日用户增长总数</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+    </div>
+</div>
+{/if}
+{/block}

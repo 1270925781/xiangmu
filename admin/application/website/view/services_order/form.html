@@ -1,0 +1,45 @@
+{extend name='admin@main'}
+
+{block name="content"}
+
+<form   class='layui-form layui-card' onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+    <div class="layui-card-body think-box-shadow " >
+
+        <div class="layui-form-item">
+            <label class="layui-input-inline " style="width: 60%;">
+                <span class="color-green">服务价格</span>
+                <input name="pay_price" type="text" class="layui-input"   value="{$vo.pay_price|default=''}" maxlength="20">
+            </label>
+        </div>
+
+		<!--<div class="layui-form-item layui-row layui-col-space15">-->
+			<!--<label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">-->
+                <!--<span class="color-green">服务名称</span>-->
+				<!--<input name="service_name" class="layui-input"  value="{$vo.service_name|default=''}" disabled>-->
+            <!--</label>-->
+            <!--<label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">-->
+                <!--<span class="color-green">服务价格</span>-->
+                <!--<input name="pay_price" type="text" class="layui-input"   value="{$vo.pay_price|default=''}" maxlength="100">-->
+            <!--</label>-->
+        <!--</div>-->
+
+        <!--<div class="layui-form-item layui-row layui-col-space15" >-->
+            <!--<label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">-->
+                <!--<span class="color-green">服务天数</span>-->
+                <!--<input name="dates" type="text" class="layui-input"  value="{$vo.dates|default=''}" disabled>-->
+            <!--</label>-->
+            <!--<label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">-->
+                <!--<span class="color-green">用户名</span>-->
+                <!--<input name="username" type="text" class="layui-input"  value="{$vo.username|default=''}" disabled>-->
+            <!--</label>-->
+        <!--</div>-->
+
+        <div class="layui-form-item text-center">
+            {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+            <button class="layui-btn" type='submit'>保存</button>
+            <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消操作吗？" data-close>取消</button>
+        </div>
+
+    </div>
+</form>
+{/block}

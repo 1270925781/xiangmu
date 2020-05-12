@@ -1,0 +1,44 @@
+<form class="layui-form layui-card" action="{:request()->url()}" data-auto="true" method="post" autocomplete="off">
+
+    <div class="layui-card-body">
+        <div class="layui-form-item" >
+            <label class="layui-form-label" style="width:20%">新的手机号</label>
+            <div class="layui-input-block" style="display: flex;">
+                <input type="text" style="width:60%" name="phone" id="phone" maxlength="11" required placeholder="请输入手机号" class="layui-input">
+                <input style="margin-left: 30px;" class="layui-btn" type="button" value="查询" onclick="info()">
+            </div>
+        </div>
+    </div>
+    <div id="userinfo" style="display: none;text-align: center;line-height: 30px;">
+    </div>
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        <button class="layui-btn" type='submit'>保存</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消操作吗？" data-close>取消</button>
+    </div>
+
+</form>
+<script>
+    function info(){
+        var phone = $("#phone").val();
+        $.ajax({
+            type: "post",
+            url: "{:url("phoneInfo")}",
+            data: {phone:phone},
+            dataType: "json",
+            async: false,
+            success: function (res) {
+                $("#userinfo").show();
+                if((res.code == -1) || (res.code == 2)){
+                    $("#userinfo").text(res.msg);
+                }else{
+                    var html = "手机号:"+ res.data.phone + "<br/>" + "账号:"+res.data.username + "<br/>" + "姓名:"+res.data.realname;
+                    $("#userinfo").html(html);
+//                    $("#userinfo").
+//                    $("#userinfo").text("姓名:"+res.data.realname);
+                }
+            }
+        });
+    }
+</script>

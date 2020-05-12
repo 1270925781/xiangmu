@@ -1,0 +1,68 @@
+{extend name='admin@main'}
+
+{block name="button"}
+{if auth("website/message/add")}
+<button data-modal='{:url("add")}' data-title="添加消息" class='layui-btn layui-btn-sm layui-btn-primary'>添加消息</button>
+{/if}
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='message/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-left nowrap' width="20%">消息标题</th>
+            <th class='text-left nowrap'>推送对象</th>
+            <th class='text-left nowrap'>消息类型</th>
+            <th class='text-left nowrap'>跳转类型</th>
+            <th class='text-left nowrap'>跳转ID</th>
+            <th class='text-left nowrap'>跳转路径</th>
+            <th class='text-left nowrap'>发送时间</th>
+            <th class='text-left nowrap'></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td>{$vo.title|default='--'}</td>
+            <td>{$vo.push_name|default='--'}</td>
+            <td>{$vo.type_name|default='--'}</td>
+            <td>{$vo.jump_type_name|default='--'}</td>
+            <td>{$vo.jump_id|default='--'}</td>
+            <td>{$vo.jump_url|default='--'}</td>
+            <td>{$vo.create_at|default='--'}</td>
+            <td class='text-left nowrap'>
+                <div class="nowrap margin-bottom-5">
+                    {if auth("website/message/edit")}
+                        {if $vo.is_push eq 2}
+                            <a data-dbclick class="layui-btn layui-btn-sm" data-modal='{:url("edit")}?id={$vo.id}' data-title="编辑消息" >编 辑</a>
+                        {/if}
+                    {else}
+                    <a data-tips-text="您没有编辑消息的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">编 辑</a>
+                    {/if}
+
+                    {if $vo.is_push eq 2}
+                    <a data-dbclick class="layui-btn layui-btn-sm" data-confirm="确定要发送吗?" data-action="{:url('push')}" data-value="id#{$vo.id}">发 送</a>
+<!--                    <a data-dbclick class="layui-btn layui-btn-sm" data-modal='{:url("push")}?id={$vo.id}'>发送</a>-->
+                    {/if}
+                    {if auth("website/message/remove")}
+                        {if $vo.is_push eq 2}
+                        <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                        {/if}
+                    {else}
+                    <a data-tips-text="您没有删除消息的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">删 除</a>
+                    {/if}
+                </div>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

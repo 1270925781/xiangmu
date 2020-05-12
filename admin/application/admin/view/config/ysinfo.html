@@ -1,0 +1,115 @@
+{extend name="main"}
+
+{block name="content"}
+
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off" style="max-width:1000px">
+    <div class="layui-card-body padding-bottom-10 think-box-shadow" style="padding-right:60px!important">
+        <div class="color-blue padding-left-40 padding-bottom-20">
+            自定义设置，包括APP版本信息。
+        </div>
+		<!--<div class="layui-form-item margin-top-20">-->
+  <!--          <label class="layui-form-label">CustomerEmail<br><span class="nowrap color-desc">客服邮箱</span></label>-->
+  <!--          <div class="layui-input-block">-->
+  <!--              <input name="app_customeremail" required placeholder="请输入客服邮箱" value="{:sysconf('app_customeremail')}" class="layui-input" maxlength=100>-->
+  <!--              <p class="help-block">当前客服邮箱，在APP端显示 {:sysconf('app_customeremail')}</p>-->
+  <!--          </div>-->
+  <!--      </div>-->
+		<div class="layui-form-item margin-top-20">
+            <label class="layui-form-label">CustomerTel<br><span class="nowrap color-desc">客服电话</span></label>
+            <div class="layui-input-block">
+                <input name="app_customertel" required placeholder="请输入客服电话" value="{:sysconf('app_customertel')}" class="layui-input" maxlength=15>
+                <p class="help-block">当前客服电话，在APP端显示 {:sysconf('app_customertel')}</p>
+            </div>
+        </div>
+        <div class="layui-form-item margin-top-20">
+            <label class="layui-form-label">CustomerTel<br><span class="nowrap color-desc">客服时间</span></label>
+            <div class="layui-input-block">
+                <input name="app_customertime" required placeholder="请输入客服时间" value="{:sysconf('app_customertime')}" class="layui-input" maxlength=11>
+                <p class="help-block">当前客服时间，在APP端显示 {:sysconf('app_customertime')}</p>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">AndroidVer<br><span class="nowrap color-desc">安卓版本</span></label>
+            <div class="layui-input-block">
+                <input name="app_androidver" required placeholder="请输入安卓最新版本号" value="{:sysconf('app_androidver')}" class="layui-input">
+                <p class="help-block">当前安卓最新版本号，在APP端显示版本 {:sysconf('app_androidver')}</p>
+            </div>
+        </div>
+		<!--<div class="layui-form-item">-->
+  <!--          <label class="layui-form-label">AndroidUrl<br><span class="nowrap color-desc">安卓版本URL</span></label>-->
+  <!--          <div class="layui-input-block">-->
+  <!--              <input name="app_androidurl" required placeholder="请输入安卓最新版本URL地址" value="{:sysconf('app_androidurl')}" class="layui-input">-->
+  <!--              <p class="help-block">当前安卓最新版本下载地址 {:sysconf('app_androidurl')}</p>-->
+  <!--          </div>-->
+  <!--      </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">IosVer<br><span class="nowrap color-desc">IOS版本</span></label>
+            <div class="layui-input-block">
+                <input name="app_iosver" required placeholder="请输入IOS最新版本号" value="{:sysconf('app_iosver')}" class="layui-input">
+                <p class="help-block">当前IOS最新版本号，在APP端显示版本 {:sysconf('app_iosver')}</p>
+            </div>
+        </div>
+		<!--<div class="layui-form-item">-->
+  <!--          <label class="layui-form-label">IosUrl<br><span class="nowrap color-desc">IOS版本URL</span></label>-->
+  <!--          <div class="layui-input-block">-->
+  <!--              <input name="app_iosurl" required placeholder="请输入IOS最新版本URL地址" value="{:sysconf('app_iosurl')}" class="layui-input">-->
+  <!--              <p class="help-block">当前IOS最新版本下载地址，AppStore地址 {:sysconf('app_iosurl')}</p>-->
+  <!--          </div>-->
+  <!--      </div>-->
+		<div class="layui-form-item">
+            <label class="layui-form-label">ShopAndroidVer<br><span class="nowrap color-desc">展厅安卓版本</span></label>
+            <div class="layui-input-block">
+                <input name="app_shopandroidver" required placeholder="请输入展厅安卓最新版本号" value="{:sysconf('app_shopandroidver')}" class="layui-input">
+                <p class="help-block">当前展厅安卓最新版本号，在APP端显示版本 {:sysconf('app_shopandroidver')}</p>
+            </div>
+        </div>
+		<!--<div class="layui-form-item">-->
+  <!--          <label class="layui-form-label">ShopAndroidUrl<br><span class="nowrap color-desc">展厅安卓版本URL</span></label>-->
+  <!--          <div class="layui-input-block">-->
+  <!--              <input name="app_shopandroidurl" required placeholder="请输入展厅安卓最新版本URL地址" value="{:sysconf('app_shopandroidurl')}" class="layui-input">-->
+  <!--              <p class="help-block">当前展厅安卓最新版本下载地址 {:sysconf('app_shopandroidurl')}</p>-->
+  <!--          </div>-->
+  <!--      </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">ShopIosVer<br><span class="nowrap color-desc">展厅IOS版本</span></label>
+            <div class="layui-input-block">
+                <input name="app_shopiosver" required placeholder="请输入展厅IOS最新版本号" value="{:sysconf('app_shopiosver')}" class="layui-input">
+                <p class="help-block">当前展厅IOS最新版本号，在APP端显示版本 {:sysconf('app_shopiosver')}</p>
+            </div>
+        </div>
+		<!--<div class="layui-form-item">-->
+  <!--          <label class="layui-form-label">ShopIosUrl<br><span class="nowrap color-desc">展厅IOS版本URL</span></label>-->
+  <!--          <div class="layui-input-block">-->
+  <!--              <input name="app_shopiosurl" required placeholder="请输入展厅IOS最新版本URL地址" value="{:sysconf('app_shopiosurl')}" class="layui-input">-->
+  <!--              <p class="help-block">当前展厅IOS最新版本下载地址，AppStore地址 {:sysconf('app_shopiosurl')}</p>-->
+  <!--          </div>-->
+  <!--      </div>-->
+
+		<div class="layui-form-item">
+            <label class="layui-form-label">AliSignname<br><span class="nowrap color-desc">短信签名</span></label>
+            <div class="layui-input-block">
+                <input name="ali_signname" required placeholder="阿里短信签名" value="{:sysconf('ali_signname')}" class="layui-input">
+                <p class="help-block">阿里短信签名，参照阿里短信 {:sysconf('ali_signname')}</p>
+            </div>
+        </div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">AccessKeyID<br><span class="nowrap color-desc">短信accesskey</span></label>
+            <div class="layui-input-block">
+                <input name="ali_accesskeyid" required placeholder="阿里短信签名" value="{:sysconf('ali_accesskeyid')}" class="layui-input">
+                <p class="help-block">阿里短信accesskey，参照阿里短信 {:sysconf('ali_accesskeyid')}</p>
+            </div>
+        </div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">AccessKeySecret<br><span class="nowrap color-desc">短信secret</span></label>
+            <div class="layui-input-block">
+                <input name="ali_accesskeysecret" required placeholder="阿里短信secret" value="{:sysconf('ali_accesskeysecret')}" class="layui-input">
+                <p class="help-block">阿里短信secret，参照阿里短信 {:sysconf('ali_accesskeysecret')}</p>
+            </div>
+        </div>
+        <div class="hr-line-dashed margin-left-40"></div>
+        <div class="layui-form-item text-center padding-bottom-10">
+            <button class="layui-btn" type="submit">保存</button>
+        </div>
+    </div>
+</form>
+{/block}

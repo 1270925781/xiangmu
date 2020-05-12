@@ -1,0 +1,55 @@
+{extend name='admin@main'}
+
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='activities_sign/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+           <th class='text-left nowrap'>联系人</th>
+            <th class='text-left nowrap' >联系电话</th>
+            <th class='text-left nowrap' >平台类型</th>
+            <th class='text-left nowrap' >活动/展会名称</th>
+            <th class='text-left nowrap' >参会人数</th>
+            <th class='text-left nowrap' >报名时间</th>
+            <th class='text-left nowrap' >处理状态</th>
+            <th class='text-left nowrap' ></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td>{$vo.linkman|default='--'}</td>
+            <td>{$vo.linkphone|default='--'}</td>
+            <td>{eq name="$vo.platform_type" value="1"}展厅端{else}用户端{/eq}</td>
+            <td>{$vo.name|default='--'}</td>
+            <td>{$vo.join_num|default='--'}</td>
+            <td>{$vo.create_at|format_datetime}</td>
+            <td>{eq name="$vo.status" value="1"}
+                    <span class="layui-badge layui-bg-green">已处理</span>
+                {else}
+                    <span class="layui-badge">未处理</span>{/eq}
+            </td>
+            <td class='text-left nowrap'>
+                <div class="nowrap margin-bottom-5">
+                    {if isset($vo.status) and $vo.status eq '0'}
+                    <!--{if auth("website/activitiessign/signstatus")}-->
+                    <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('signstatus')}" data-value="id#{$vo.id};status#0">处 理</a>
+                    <!--{else}-->
+                    <a data-tips-text="您没有处理报名的权限哦！" class="layui-btn layui-btn-sm layui-btn-primary layui-disabled">处 理</a>
+                    <!--{/if}-->
+                    {/if}
+                </div>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

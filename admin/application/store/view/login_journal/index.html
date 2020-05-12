@@ -1,0 +1,38 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='login_journal/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='text-center' >用户名</th>
+            <th class='text-center' >手机号</th>
+            <th class='text-center' >登录时间</th>
+            <th class='text-center' >登录平台</th>
+            <th class='text-center' >登录设备</th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr data-dbclick>
+            <td class='text-center' >{$vo.username|default='--'}</td>
+            <td class='text-center' >{$vo.phone|default='--'}</td>
+            <td class='text-center'>{$vo.addtime|default='--'}</td>
+            <td class='text-center nowrap'>
+                {eq name='vo.platform_type' value='2'}<span class="layui-badge layui-bg-green">用户端</span>{else}<span class="layui-badge layui-bg-green">展厅端</span>{/eq}<br>
+            </td>
+            <td class='text-center nowrap'>
+                {eq name='vo.system_type' value='2'}<span class="layui-badge layui-bg-green">苹果</span>{else}<span class="layui-badge layui-bg-green">安卓</span>{/eq}<br>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+{/block}

@@ -1,0 +1,75 @@
+<fieldset>
+<legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">消息标题</label>
+            <div class="layui-input-inline">
+                <input name="title" value="{$Think.get.title|default=''}" placeholder="请输入消息标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">推送对象</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="push_obj" lay-search>
+                    <option value="">-- 全部 --</option>
+                    {foreach $push as $v}
+                    {eq name='Think.get.push_obj' value='$v.id.""'}
+                    <option selected value="{$v.id}">{$v.name}</option>
+                    {else}
+                    <option value="{$v.id}">{$v.name}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">消息类型</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="type" lay-search>
+                    <option value="">-- 全部 --</option>
+                    {foreach $type as $v}
+                    {eq name='Think.get.type' value='$v.id.""'}
+                    <option selected value="{$v.id}">{$v.name}</option>
+                    {else}
+                    <option value="{$v.id}">{$v.name}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">跳转类型</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="jump_type" lay-search>
+                    <option value="">-- 全部 --</option>
+                    {foreach $jumptype as $v}
+                    {eq name='Think.get.jump_type' value='$v.id.""'}
+                    <option selected value="{$v.id}">{$v.name}</option>
+                    {else}
+                    <option value="{$v.id}">{$v.name}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">是否发送</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="is_push" lay-search>
+                    <option value="">-- 全部 --</option>
+                    {foreach $is_push as $v}
+                    {eq name='Think.get.is_push' value='$v.id.""'}
+                    <option selected value="{$v.id}">{$v.name}</option>
+                    {else}
+                    <option value="{$v.id}">{$v.name}</option>
+                    {/eq}
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+    <script>form.render()</script>
+</fieldset>

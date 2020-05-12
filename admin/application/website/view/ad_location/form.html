@@ -1,0 +1,33 @@
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body" style="display: flex;">
+        <div class="layui-row margin-bottom-15" style="display: flex;">
+            <label class="layui-col-xs2 think-form-label" style="width: 120px;padding: 9px 5px">广告类型</label>
+            <!--<label class="layui-col-xs2 think-form-label" style="width: 75px;padding: 9px 5px">广告类型</label>-->
+            <label class="layui-col-xs8 think-form-group-left" style="display: block;margin-left:15px">
+                <select class="layui-select" name="platform_type" style="display: block;width:150px">
+                    <option value="">-- 全部 --</option>
+                    {foreach $platform_type as $pt}
+                        {if isset($vo.platform_type) and $vo.platform_type eq $pt.id}
+                        <option selected value="{$pt.id}">{$pt.name|default=''}</option>
+                        {else}
+                        <option value="{$pt.id}">{$pt.name|default=''}</option>
+                        {/if}
+                    {/foreach}
+                </select>
+            </label>
+        </div>
+        <div class="layui-row margin-bottom-15" style="display: flex;">
+            <label class="layui-col-xs2 think-form-label" style="width: 75px;padding: 9px 5px" >广告位置</label>
+            <label class="layui-col-xs10" style="width: 300px;">
+                <input name="name" required  value='{$vo.name|default=""}'  placeholder="请输入广告位置" class="layui-input">
+            </label>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+        <button class="layui-btn" type='submit'>保存</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消操作吗？" data-close>取消</button>
+    </div>
+</form>

@@ -1,0 +1,36 @@
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+
+    <div class="layui-card-body">
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">配置名称</label>
+            <label class="layui-col-xs10">
+                <input style="margin-left:15px" name="name" class="layui-input" placeholder="配置名称" value="{$vo.name|default=''}">
+            </label>
+        </div>
+        <div class="layui-row margin-bottom-15">
+            <label class="layui-col-xs2 think-form-label">配置值</label>
+            <label class="layui-col-xs10">
+                <input style="margin-left:15px" name="key_name" readonly  class="layui-input" placeholder="请输入配置值" value="{$vo.key_name|default=''}">
+            </label>
+        </div>
+        <div class="layui-row margin-bottom-15">
+             <label class="layui-col-xs2 think-form-label">配置说明</label>
+             <label class="layui-col-xs10">
+                 <textarea name="content" style="height: 200px;margin-left: 15px;width:100%">{$vo.content|default=''|raw}</textarea>
+             </label>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+    <div class="layui-form-item text-center">
+        {notempty name='vo.id'}<input type='hidden' value='{$vo.id}' name='id'>{/notempty}
+         <button class="layui-btn" type='submit'>保存</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消操作吗？" data-close>取消</button>
+    </div>
+</form>
+<script>
+ window.form.render();
+    require(['ckeditor', 'angular'], function () {
+        window.createEditor('[name="content"]', {height: 500});
+    })
+</script>

@@ -1,0 +1,74 @@
+{extend name='admin@main'}
+
+{block name="button"}
+{if auth("store/shop_label/remove")}
+<button data-action='{:url("remove")}' data-rule="id#{key}" data-confirm="确定要删除选择的数据吗?" class='layui-btn layui-btn-sm layui-btn-primary'>删除标签</button>
+{/if}
+{/block}
+
+{block name="content"}
+<div class="think-box-shadow">
+    <table class="layui-table" lay-skin="line">
+        <caption class="margin-bottom-10 text-left">{include file='shop_label/index_search'}</caption>
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='list-table-check-td think-checkbox'>
+                <input data-auto-none data-check-target='.list-check-box' type='checkbox'>
+            </th>
+            <th class='list-table-sort-td'>
+                <button type="button" data-reload class="layui-btn layui-btn-xs">刷 新</button>
+            </th>
+            <th class='text-left nowrap'>标签名称</th>
+            <th class='text-left nowrap'>首次使用展厅</th>
+            <th class='text-center nowrap'>点击次数</th>
+           <th class='text-center nowrap'>累积使用展厅数</th>
+            <th class='text-center nowrap'>当前使用展厅数</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">添加时间</th>
+            <th></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td think-checkbox'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='list-table-sort-td'>
+                <input data-action-blur="{:request()->url()}" data-value="id#{$vo.id};action#sort;sort#{value}" data-loading="false" value="{$vo.sort}" class="list-sort-input">
+            </td>
+            <td class='text-left nowrap'>
+                <!--<a data-tips-image="{$vo.logo|default=''}" class="fa fa-image font-s14 margin-right-5"></a>-->
+                {$vo.title|default=''}
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.shop_name|default=''}
+            </td>
+            <td class="text-center">{$vo.count}</td>
+            <td class="text-center">{$vo.hotcount}</td>
+            <td class="text-center">{$vo.nowcount}</td>
+            <td class='text-center nowrap'>
+                {eq name='vo.is_freeze' value='1'}<span class="layui-badge">已禁用</span>{else}<span class="layui-badge layui-bg-green">使用中</span>{/eq}<br>
+            </td>
+            <td class='text-center nowrap'>{$vo.create_at|format_datetime}</td>
+            <td class='text-left nowrap'>
+                {if $vo.is_freeze eq 2 and auth("store/shop_label/forbid")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('forbid')}" data-value="id#{$vo.id};is_freeze#1">禁 用</a>
+                {elseif auth("store/shop_label/resume")}
+                <a class="layui-btn layui-btn-sm layui-btn-warm" data-action="{:url('resume')}" data-value="id#{$vo.id};is_freeze#2">启 用</a>
+                {/if}
+
+                {if auth("store/shop_label/remove")}
+                <a class="layui-btn layui-btn-sm layui-btn-danger" data-confirm="确定要删除数据吗?" data-action="{:url('remove')}" data-value="id#{$vo.id}">删 除</a>
+                {/if}
+
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+</div>
+{/block}

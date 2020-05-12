@@ -1,0 +1,149 @@
+{extend name='admin@main'}
+
+{block name="content"}
+<style>
+
+    .store-total-container {
+        font-size: 14px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+    }
+
+    .store-total-container .store-total-icon {
+        top: 45%;
+        right: 8%;
+        font-size: 65px;
+        position: absolute;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .store-total-container .store-total-item {
+        color: #fff;
+        line-height: 4em;
+        padding: 15px 25px;
+        position: relative;
+    }
+
+    .store-total-container .store-total-item > div:nth-child(2) {
+        font-size: 46px;
+        line-height: 46px;
+    }
+
+</style>
+
+<div class="think-box-shadow store-total-container notselect">
+	<div class="margin-bottom-15">店铺排行</div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=shopviewnum" data-title="展厅浏览次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2);line-height: 2em;">
+                <div>浏览次数前</div>
+                <div>100</div>
+                <div>展厅浏览次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+		<div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=shopcollectnum" data-title="展厅收藏次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95);line-height: 2em;">
+                <div>收藏次数前</div>
+                <div>100</div>
+                <div>展厅收藏次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=shopsharenum" data-title="展厅分享次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3);line-height: 2em;">
+                <div>分享次数前</div>
+                <div>100</div>
+                <div>展厅分享次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+		<div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=shoplikenum" data-title="展厅点赞次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-141deg,#ecca1b,#f39526);line-height: 2em;">
+                <div>点赞次数前</div>
+                <div>100</div>
+                <div>展厅点赞次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+	</div>
+	<div class="layui-row layui-col-space15">
+		<div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=shopcallnum" data-title="展厅拨打电话次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2);line-height: 2em;">
+                <div>拨打电话次数前</div>
+                <div>100</div>
+                <div>展厅拨打电话次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+    </div>
+</div>
+
+<div class="think-box-shadow store-total-container notselect">
+	<div class="margin-bottom-15">产品排行</div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=goodsviewnum" data-title="产品浏览次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2);line-height: 2em;">
+                <div>浏览次数前</div>
+                <div>100</div>
+                <div>产品浏览次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+		<div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=goodscollectnum" data-title="产品收藏次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95);line-height: 2em;">
+                <div>收藏次数前</div>
+                <div>100</div>
+                <div>产品收藏次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+        <div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=goodssharenum" data-title="产品分享次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3);line-height: 2em;">
+                <div>分享次数前</div>
+                <div>100</div>
+                <div>产品分享次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+		<div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=goodslikenum" data-title="产品点赞次数前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-141deg,#ecca1b,#f39526);line-height: 2em;">
+                <div>点赞次数前</div>
+                <div>100</div>
+                <div>产品点赞次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+    </div>
+</div>
+
+<div class="think-box-shadow store-total-container notselect">
+	<div class="margin-bottom-15">其他排行</div>
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=searchkey" data-title="搜索关键字前500">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#57bdbf,#2f9de2);line-height: 2em;">
+                <div>搜索关键字前</div>
+                <div>500</div>
+                <div>搜索关键字次数排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+		<div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=labelhot" data-title="展厅标签热度前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-125deg,#ff7d7d,#fb2c95);line-height: 2em;">
+                <div>标签热度前</div>
+                <div>100</div>
+                <div>展厅标签热度排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+		<div class="layui-col-sm6 layui-col-md3" data-modal="{:url('ranknum')}?ranktype=labeluse" data-title="展厅标签累计使用前100">
+            <div class="store-total-item nowrap" style="background:linear-gradient(-113deg,#c543d8,#925cc3);line-height: 2em;">
+                <div>标签累计使用前</div>
+                <div>100</div>
+                <div>展厅标签累计使用排行</div>
+            </div>
+            <i class="store-total-icon layui-icon layui-icon-template-1"></i>
+        </div>
+    </div>
+</div>
+{/block}

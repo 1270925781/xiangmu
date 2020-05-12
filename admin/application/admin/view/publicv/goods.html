@@ -1,0 +1,99 @@
+{extend name='admin@iframe'}
+
+{block name="content"}
+<div class="think-box-shadow">
+
+	<fieldset>
+		<legend class="layui-bg-cyan">条件搜索</legend>
+		<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+			<div class="layui-form-item layui-inline">
+				<div class="layui-input-inline">
+					<input name="stitle" value="{$Think.get.stitle|default=''}" id="stitle" placeholder="请输入展厅名称" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item layui-inline">
+				<div class="layui-input-inline">
+					<input name="title" value="{$Think.get.title|default=''}" id="title" placeholder="请输入产品名称" class="layui-input">
+				</div>
+			</div>
+			{notempty name='goodscate'}
+			<div class="layui-form-item layui-inline">
+				<div class="layui-input-inline">
+					<select class="layui-select" name="cate_id" id="cate_id">							
+						<option selected value="">--全部一级分类--</option>
+						{foreach $goodscate as $v}
+						<!--{eq name='$Think.get.cate_id' value='$v.id.""'}-->
+						<option selected value="{$v.id}">{$v.title}</option>
+						<!--{else}-->
+						<option value="{$v.id}">{$v.title}</option>
+						<!--{/eq}-->
+						{/foreach}
+					</select>
+				</div>
+			</div>				
+			{/notempty}
+			
+			<div class="layui-form-item layui-inline">
+				<button class="layui-btn layui-btn-primary" onclick="formsearch()"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+			</div>
+		</form>
+	</fieldset>
+	<table class="layui-table" lay-skin="line">
+        {notempty name='list'}
+        <thead>
+        <tr>
+            <th class='' >产品ID</th>			
+            <th class='' >展厅名称</th>
+            <th class='' >产品名称</th>			
+            <th class='' >产品大类</th>
+            <th class='' >创建时间</th>
+            <th class=''></th>
+        </tr>
+        </thead>
+        {/notempty}
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='text-left nowrap'>{$vo.id}</td>
+            <td class='' style="width: 120px;">{$vo.stitle|mb_substr=0,13,'utf-8'}</td>
+            <td class='' style="width: 130px;">{$vo.title|mb_substr=0,13,'utf-8'}</td>
+			<td class='text-left nowrap'>{$vo.ctitle}</td>
+            <td class='text-left nowrap'>{$vo.create_at}</td>
+            <td class='text-left nowrap'>
+				<a class="layui-btn layui-btn-danger layui-btn-sm" onclick="btnclick({$vo.id});">选 用</a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    {empty name='list'}<span class="notdata">没有记录哦</span>{else}{$pagehtml|raw|default=''}{/empty}
+
+</div>
+	<script>
+		$(function () {
+			$('.pagination a').each(function(i,v){
+			    $(v).removeAttr('data-open');
+			    $(v).removeAttr('onclick');
+			})
+		});
+
+		layui.use(['form'], function(){
+			var form = layui.form;
+			form.render();
+		});
+
+		function formsearch(){
+			var stitle=$('#stitle').val();var title=$('#title').val();var cate_id=$('#cate_id').val();
+			location.href = "{:url('goods')}?stitle="+stitle+"&title="+title+"&cate_id="+cate_id;
+		}
+		
+		//#selected_id 父页面回填输入框的ID
+		function btnclick(selected_id){
+			//window.parent.document.getElementById("longitude").value = selected_id; 
+			$("#jump_id",window.parent.document).val(selected_id);
+			var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+			parent.layer.close(index); //再执行关闭
+		}
+	</script>
+{/block}

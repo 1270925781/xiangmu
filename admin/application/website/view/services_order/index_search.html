@@ -1,0 +1,51 @@
+<fieldset>
+    <legend>条件搜索</legend>
+    <form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get" autocomplete="off">
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input name="username" value="{$Think.get.username|default=''}" placeholder="请输入用户名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">服务名称</label>
+            <div class="layui-input-inline">
+                <input name="service_name" value="{$Think.get.service_name|default=''}" placeholder="请输入服务名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">支付类型</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="type">
+                    {foreach [''=>'- 全部状态 -','1'=>'微信','2'=>'支付宝'] as $k=>$v}
+                    <!--{eq name='Think.get.type' value='$k.""'}-->
+                    <option selected value="{$k}">{$v}</option>
+                    <!--{else}-->
+                    <option value="{$k}">{$v}</option>
+                    <!--{/eq}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <label class="layui-form-label">支付状态</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="pay_status">
+                    {foreach [''=>'- 全部状态 -','1'=>'未支付','2'=>'已支付'] as $k=>$v}
+                    <!--{eq name='Think.get.pay_status' value='$k.""'}-->
+                    <option selected value="{$k}">{$v}</option>
+                    <!--{else}-->
+                    <option value="{$k}">{$v}</option>
+                    <!--{/eq}-->
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-inline">
+            <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+        </div>
+    </form>
+    <script>form.render()</script>
+</fieldset>

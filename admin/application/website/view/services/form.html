@@ -1,0 +1,44 @@
+{extend name='admin@main'}
+
+{block name="content"}
+
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body think-box-shadow padding-left-40" >
+
+		<div class="layui-form-item layui-row layui-col-space15">
+			<label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">
+                <span class="color-green">服务名称</span>
+				<input name="title" required class="layui-input" placeholder="请输入服务名称" value="{$vo.title|default=''}" maxlength="100">
+            </label>
+            <label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">
+                <span class="color-green">服务价格</span>
+                <input name="price" type="text" class="layui-input" placeholder="请输入服务价格" pattern="^[1-9]\d*(.\d{1,2})?$" value="{$vo.price|default=''}" maxlength="100" required>
+            </label>			
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15" >
+            <label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">
+                <span class="color-green">服务天数</span>
+                <input name="dates" type="text" class="layui-input" placeholder="请输入服务天数" pattern="^[1-9]\d*$" value="{$vo.dates|default=''}" maxlength="100" required>
+            </label>
+            <label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">
+                <span class="color-green">服务说明</span>
+                <textarea class="layui-textarea" name="explain" required>{$vo.explain|default=''|raw}</textarea>
+            </label>
+        </div>
+
+        <div class="layui-form-item text-center">
+            {notempty name='vo.id'}<input type="hidden" name="id" value="{$vo.id}">{/notempty}
+            <button class="layui-btn" type="submit">保存</button>
+            <button class="layui-btn layui-btn-danger" data-confirm="确定要取消操作吗？" data-close>取消</button>
+        </div>
+
+    </div>
+</form>
+{/block}
+
+{block name='script'}
+<script>
+    window.form.render();
+</script>
+{/block}

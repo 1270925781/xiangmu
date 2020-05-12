@@ -1,0 +1,47 @@
+<form onsubmit="return false;" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body">
+        <div class="color-blue padding-left-40 padding-bottom-20">
+            文件将存储在本地服务器，需确保服务器的 public/upload 目录有写入权限，还需要有足够的存储空间。
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">AllowExts<br><span class="nowrap color-desc">允许类型</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_local_exts" required value="{:sysconf('storage_local_exts')}" placeholder="请输入系统文件上传后缀" class="layui-input">
+                <p class="help-block">设置系统允许上传文件的后缀，多个以英文逗号隔开。如：png,jpg,rar,doc</p>
+            </div>
+        </div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">AllowMinSize<br><span class="nowrap color-desc">允许最小</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_minsize" required value="{:sysconf('storage_minsize')}" placeholder="请输入系统文件上传最小" class="layui-input">
+                <p class="help-block">设置系统允许上传文件的最小。如：1000，上传大小限制，单位B</p>
+            </div>
+        </div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">AllMinTitle<br><span class="nowrap color-desc">允许最小提示</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_minsize_title" required value="{:sysconf('storage_minsize_title')}" placeholder="请输入系统文件上传最小提示" class="layui-input">
+                <p class="help-block">设置系统允许上传文件的最小提示语。如：1K</p>
+            </div>
+        </div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">AllowMaxSize<br><span class="nowrap color-desc">允许最大</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_maxsize" required value="{:sysconf('storage_maxsize')}" placeholder="请输入系统文件上传最大" class="layui-input">
+                <p class="help-block">设置系统允许上传文件的最大。如：2048000，上传大小限制，单位B</p>
+            </div>
+        </div>
+		<div class="layui-form-item">
+            <label class="layui-form-label">AllMaxTitle<br><span class="nowrap color-desc">允许最大提示</span></label>
+            <div class="layui-input-block">
+                <input type="text" name="storage_maxsize_title" required value="{:sysconf('storage_maxsize_title')}" placeholder="请输入系统文件上传示提示" class="layui-input">
+                <p class="help-block">设置系统允许上传文件的示提示语。如：1K</p>
+            </div>
+        </div>
+        <div class="hr-line-dashed margin-left-40"></div>
+        <div class="layui-form-item text-center">
+            <input type="hidden" name="storage_type" value="local">
+            <button class="layui-btn" type="submit">保存</button>
+        </div>
+    </div>
+</form>

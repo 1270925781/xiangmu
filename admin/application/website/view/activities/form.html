@@ -1,0 +1,202 @@
+{extend name='admin@main'}
+
+{block name="content"}
+
+<form onsubmit="return false;" id="actForm" action="{:request()->url()}" data-auto="true" method="post" class='layui-form layui-card' autocomplete="off">
+    <div class="layui-card-body think-box-shadow padding-left-40" >
+
+		<div class="layui-form-item layui-row layui-col-space15">
+			<label class="layui-input-inline layui-col-xs6 relative" style="width: 40%;">
+                <span class="color-green">活动名称</span>
+				<input name="name" required class="layui-input" placeholder="请输入活动名称" value="{$vo.name|default=''}" maxlength="100">
+            </label>
+            <label class="layui-col-xs5" style="width: 40%;">
+                <span class="color-green" >活动时间</span>
+                <input type="text" name="act_time" id="act_time" value='{$vo.act_time|default=""}' style="width:150px;height: 38px;" placeholder="请选择活动时间" class="layui-input" required readonly/>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15" >
+            <label class="layui-input-inline layui-col-xs6 relative" style="width: 40%;">
+                <span class="color-green">平台类型</span>
+                <select class="layui-select" required name="platform_type" lay-search>
+                    <option value="1" {if isset($vo.platform_type) && $vo.platform_type==1}selected{/if}>展厅平台</option>
+                    <option value="2" {if isset($vo.platform_type) && $vo.platform_type==2}selected{/if}>用户平台</option>
+                </select>
+            </label>
+            <label class="layui-input-inline layui-col-xs6 relative" style="width: 40%;">
+                <span class="color-green">活动分类</span>
+                <select class="layui-select" required name="cate" lay-search>
+                    <option value="1" {if isset($vo.cate) && $vo.cate==1}selected{/if}>活动</option>
+                    <option value="2" {if isset($vo.cate) && $vo.cate==2}selected{/if}>展会</option>
+                </select>
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15" >
+            <label class="layui-input-inline layui-col-xs5 relative" style="width: 40%;">
+                <span class="color-green">活动类型</span>
+                <select class="layui-select" required id="free_type" name="type" lay-search>
+                    <option value="1" {if isset($vo.type) && $vo.type==1}selected{/if}>收费</option>
+                    <option value="2" {if isset($vo.type) && $vo.type==2}selected{/if}>免费</option>
+                </select>
+            </label>
+			<label class="layui-input-inline layui-col-xs5 relative" style="width: 40%;">
+                <span class="color-green">活动费用</span>
+                <input required="" name="price" id="price" class="layui-input" pattern="^(([1-9][0-9]*)|(([0]\.\d{1,2}|[1-9][0-9]*\.\d{1,2})))$" placeholder="请输入活动费用" value="{$vo.price|default=''}" maxlength="10">
+            </label>
+        </div>
+
+        <div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-input-inline layui-col-xs6 relative" style="width: 40%;">
+                <span class="color-green">主办方</span>
+                <input name="host" class="layui-input" placeholder="请输入主办方名称" value="{$vo.host|default=''}" maxlength="100" required="">
+            </label>
+            <label class="layui-input-inline layui-col-xs6 relative" style="width: 40%;">
+                <span class="color-green">举办方</span>
+                <input name="organizer" class="layui-input" placeholder="请输入举办方名称" value="{$vo.organizer|default=''}" maxlength="100">
+            </label>
+        </div>
+
+		<div class="layui-form-item layui-row layui-col-space15">
+            <label class="layui-input-inline layui-col-xs6 relative" style="width: 40%;">
+                <span class="color-green">联系人</span>
+                <input name="linkman" class="layui-input" placeholder="请输入联系人" value="{$vo.linkman|default=''}" maxlength="100">
+            </label>
+            <label class="layui-input-inline layui-col-xs6 relative" style="width: 40%;">
+                <span class="color-green">联系电话</span>
+                <input name="link_phone" class="layui-input" pattern="^[0-9]*$" placeholder="请输入联系电话" value="{$vo.link_phone|default=''}" maxlength="100">
+            </label>
+        </div>
+
+        <div class="layui-form-item">
+             <span class="color-green label-required-prev">主办方logo、封面图、详情图</span><span class="color-red font-s12">（主办方logo尺寸宽32*高25，封面图尺寸宽710*高280，详情图尺寸宽为750*高为350，最大5M）</span></span>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                	<th class="text-center">主办方logo</th>
+                    <th class="text-center">封面图</th>
+                    <th class="text-center">详情图</th>
+                </tr>
+                <tr>
+                	<td width="90px" class="text-left"><input name="host_logo" type="hidden" value="{$vo.host_logo|default=''}"></td>
+					<td width="90px" class="text-left"><input name="cover_image" type="hidden" value="{$vo.cover_image|default=''}"></td>
+                    <td width="90px" class="text-left"><input name="details_image" type="hidden" value="{$vo.details_image|default=''}"></td>
+                </tr>
+                </thead>
+            </table>
+             <script>$('[name="host_logo"]').uploadOneImage(),$('[name="cover_image"]').uploadOneImage(),$('[name="details_image"]').uploadOneImage()</script>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-inline layui-col-xs9 relative" style="width: 40%;">
+                <label for="location_min" class=""><span class="label-required-prev color-green">开始时间：</span></label>
+                <input required type="text" class="layui-input" name="start_time" id="start_time" value='{$vo.start_time|default=""}' placeholder="请选择开始时间" readonly/>
+            </div>
+			<div class="layui-input-inline layui-col-xs9 relative" style="width: 40%;">
+                <label for="location_min"><span class="label-required-prev color-green">结束时间：</span></label>
+                <input required type="text" class="layui-input" name="end_time" id="end_time" value='{$vo.end_time|default=""}' required placeholder="请选择结束时间" readonly />
+            </div>
+        </div>
+
+		<!--<div class="layui-form-item layui-row layui-col-space15">-->
+  <!--          <label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">-->
+  <!--              <span class="color-green">经度</span>-->
+  <!--              <input name="longitude" id="longitude" class="layui-input" placeholder="请输入经度" value="{$vo.longitude|default=''}" maxlength="50">-->
+  <!--          </label>-->
+  <!--          <label class="layui-input-inline layui-col-xs3 relative" style="width: 40%;">-->
+  <!--              <span class="color-green">纬度</span>-->
+  <!--              <input name="latitude" id="latitude" class="layui-input" placeholder="请输入纬度" value="{$vo.latitude|default=''}" maxlength="50">-->
+  <!--          </label>-->
+		<!--	<label class="layui-input-inline layui-col-xs3 relative" style="width: 6%;padding-top: 40px;">-->
+		<!--		<span class="color-green" style="cursor:pointer;" data-iframe="{:url('admin/publicv/amap')}?longitude={$vo.longitude|default=''}&latitude={$vo.latitude|default=''}" data-title="高德地图获取坐标">坐标</span>-->
+
+				<!-- onclick="window.open('https://lbs.amap.com/console/show/picker')" style="cursor:pointer;" title="去高德地图选坐标"-->
+		<!--	</label>-->
+  <!--      </div>-->
+  
+		 <div class="layui-form-item layui-row layui-col-space15">
+            <input type="hidden" name="longitude" id="longitude" value="{$vo.longitude}"/>
+            <input type="hidden" name="latitude" id="latitude" value="{$vo.latitude}"/>
+            <label class="layui-input-inline layui-col-xs15 relative" style="width: 50%;">
+                <span class="color-green" style="cursor:pointer;" data-iframe="{:url('admin/publicv/amap')}?longitude={$vo.longitude|default=''}&latitude={$vo.latitude|default=''}" data-title="高德地图获取坐标" required>获取场地位置</span>
+                <span class="color-green" id="right_icon" style="margin-left: 50px;display:none">√</span>
+            </label>
+        </div>
+        
+         <div class="layui-form-item" id="address_box" style="display: none">
+            <label class="layui-input-inline layui-col-xs6 relative" style="width: 81%;">
+                <span class="color-green">活动场地</span>
+                <input name="address" id="address" required class="layui-input" placeholder="请输入活动场地" value="{$vo.address|default=''}">
+            </label>
+        </div>
+
+        <div class="layui-form-item block">
+            <span class="label-required-prev color-green">活动介绍</span>
+            <textarea required name="content">{$vo.content|default=''|raw}</textarea>
+        </div>
+
+        <div class="layui-form-item text-center">
+            {notempty name='vo.id'}<input type="hidden" name="id" value="{$vo.id}">{/notempty}
+             <button class="layui-btn" lay-submit="" lay-filter="save_act">保存</button>
+            <button class="layui-btn layui-btn-danger" data-confirm="确定要取消操作吗？" data-close>取消</button>
+        </div>
+
+    </div>
+</form>
+{/block}
+
+{block name='script'}
+<script>
+    window.form.render();
+	var startDate = laydate.render({
+        elem: '#start_time',
+        type: 'datetime',
+        btns: ['clear', 'confirm'],
+        done:function(value,date){
+            if(value!=""){
+                date.month=date.month-1;
+                endDate.config.min=date;
+            }else{
+                endDate.config.min=startDate.config.min;
+            }
+        },
+	});
+    var endDate = laydate.render({
+        elem: '#end_time',
+        type: 'datetime',
+        btns: ['clear', 'confirm'],
+        done:function(value,date){
+            if(value!=""){
+                date.month=date.month-1;
+                startDate.config.max=date;
+            }else{
+                startDate.config.max=endDate.config.max;
+            }
+        }
+	});
+	laydate.render({elem: '#act_time',type: 'datetime'});
+
+    require(['ckeditor', 'angular'], function () {
+        window.createEditor('[name="content"]', {height: 300});
+    });
+    
+    // layui.use(['form'], function(){
+    //     var form = layui.form;
+    //     form.on('submit(save_act)', function(data){
+    //         var longitude = $('#longitude').val();
+    //         var latitude = $('#latitude').val();
+    //         if(longitude == ''){
+    //         	layer.msg('请获取坐标',{icon:5});
+    //         	return;
+    //         }else{
+    //         	 $("#actForm").submit();
+    //         }
+    //         return false;
+    //     });
+    // });
+
+   
+
+</script>
+{/block}
